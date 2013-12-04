@@ -24,6 +24,8 @@ MediaPlayer.dependencies.FragmentModel = function () {
         errorLoadingCallback,
         streamEndCallback,
 
+        LOADING_REQUEST_THRESHOLD = 5,
+
         loadCurrentFragment = function(request) {
             var onSuccess,self = this;
 
@@ -170,6 +172,10 @@ MediaPlayer.dependencies.FragmentModel = function () {
             return null;
         },
 
+        removeExecutedRequest: function(request) {
+            removeExecutedRequest.call(this, request);
+        },
+
         removeExecutedRequestsBeforeTime: function(time) {
             var lastIdx = executedRequests.length - 1,
                 start = NaN,
@@ -192,6 +198,7 @@ MediaPlayer.dependencies.FragmentModel = function () {
 
         abortRequests: function() {
             this.fragmentLoader.abort();
+            loadingRequests = [];
         },
 
         executeCurrentRequest: function() {
@@ -199,6 +206,12 @@ MediaPlayer.dependencies.FragmentModel = function () {
                 currentRequest;
 
             if (pendingRequests.length === 0) return;
+
+            if (loadingRequests.length >= LOADING_REQUEST_THRESHOLD) {
+                // too many requests have been loading, do nothing until some of them are loaded or aborted
+                return;
+            }
+
             // take the next request to execute and remove it from the list of pending requests
             currentRequest = pendingRequests.shift();
 

@@ -51,6 +51,8 @@ MediaPlayer = function (aContext) {
         initialized = false,
         playing = false,
         autoPlay = true,
+        scheduleWhilePaused = false,
+        bufferMax = MediaPlayer.dependencies.BufferExtensions.BUFFER_SIZE_REQUIRED,
 
         isReady = function () {
             return (!!element && !!source);
@@ -76,6 +78,10 @@ MediaPlayer = function (aContext) {
             streamController.setVideoModel(videoModel);
             streamController.setAutoPlay(autoPlay);
             streamController.load(source);
+            system.mapValue("scheduleWhilePaused", scheduleWhilePaused);
+            system.mapOutlet("scheduleWhilePaused", "stream");
+            system.mapValue("bufferMax", bufferMax);
+            system.injectInto(this.bufferExt, "bufferMax");
         },
 
         doAutoPlay = function () {
@@ -97,6 +103,7 @@ MediaPlayer = function (aContext) {
         abrController: undefined,
         metricsModel: undefined,
         metricsExt: undefined,
+        bufferExt: undefined,
 
         addEventListener: function (type, listener, useCapture) {
             this.eventBus.addEventListener(type, listener, useCapture);
@@ -131,6 +138,22 @@ MediaPlayer = function (aContext) {
 
         getAutoPlay: function () {
             return autoPlay;
+        },
+
+        setScheduleWhilePaused: function(value) {
+            scheduleWhilePaused = value;
+        },
+
+        getScheduleWhilePaused: function() {
+            return scheduleWhilePaused;
+        },
+
+        setBufferMax: function(value) {
+            bufferMax = value;
+        },
+
+        getBufferMax: function() {
+            return bufferMax;
         },
 
         getMetricsExt: function () {

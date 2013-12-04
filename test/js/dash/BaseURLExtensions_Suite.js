@@ -77,6 +77,7 @@
                 });
                 
                 it("findSIDX", function(){
+					debugger;
                    var buffer = new ArrayBuffer(0);
                    var infor=[];
                    var obj={};
@@ -86,7 +87,7 @@
                    
                    infor.bytesLoaded=20;
                    
-                   expect(function() {baseURLExt.findSIDX (buffer,infor)}).toThrow();
+                   expect(function() {baseURLExt.findSIDX (buffer,infor)}).not.toThrow();
                 });
             });
         }

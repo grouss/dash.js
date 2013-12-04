@@ -153,7 +153,7 @@ describe("AbrController Suite", function () {
                  },"data null",100);
                  
                  runs(function(){
-                     expect(successResult).toEqual(0);
+                     expect(successResult.quality).toEqual(0);
                   });
         });
         

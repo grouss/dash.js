@@ -74,18 +74,16 @@ if(window.location.href.indexOf("runner.html")>0)
             expect($(element)[0].currentTime).toBe(0);
         });
 		
-        it("seek",function(){
-			debugger;			
+        it("seek",function(){		
 			streamController.load(testUrl);
 			waits(1000);
 			waitsFor(function(){
 				if(streamController.getManifestExt() != undefined) return true;
 			},"manifest is not loaded",100);
 			runs(function(){
-				debugger;
 				bufferController = system.getObject("bufferController");
 				streamController.play();
-				expect(bufferController.metricsModel.getMetricsFor("video").PlayList[1].mstart).toBe(0);	
+				expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
 			});      
         });
           
@@ -100,7 +98,7 @@ if(window.location.href.indexOf("runner.html")>0)
 				debugger;
 				bufferController = system.getObject("bufferController");
 				streamController.play();
-				expect(bufferController.metricsModel.getMetricsFor("video").PlayList[1].mstart).toBe(0);	
+				expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
 			});    
         });
          

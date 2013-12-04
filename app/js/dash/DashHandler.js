@@ -332,10 +332,11 @@ Dash.dependencies.DashHandler = function () {
                     frag = segments[i];
                     ft = frag.startTime / frag.timescale;
                     fd = frag.duration / frag.timescale;
-                    if (time >= ft && time <= (ft + fd)) {
+                    if ((time + Dash.dependencies.DashHandler.EPSILON) >= ft && 
+                        (time - Dash.dependencies.DashHandler.EPSILON) <= (ft + fd)) {
                         idx = i;
                         break;
-                    } else if (idx === -1 && time > (ft + fd)) {
+                    } else if (idx === -1 && (time - Dash.dependencies.DashHandler.EPSILON) > (ft + fd)) {
                         // time is past the end
                         idx  = i + 1;
                     }
@@ -623,8 +624,6 @@ Dash.dependencies.DashHandler = function () {
         getSegmentCountForDuration = function (quality, data, requiredDuration, bufferedDuration) {
             var self = this,
                 representation = getRepresentationForQuality(quality, data),
-                DEFAULT_RATE = 2,
-                rate = Math.max(bufferedDuration / requiredDuration, DEFAULT_RATE),
                 remainingDuration = Math.max(requiredDuration - bufferedDuration, 0),
                 deferred = Q.defer(),
                 segmentDuration,
@@ -661,7 +660,7 @@ Dash.dependencies.DashHandler = function () {
                         segmentDuration = fd / ft;
                     }
 
-                    segmentCount = Math.ceil((remainingDuration / segmentDuration) + (requiredDuration/segmentDuration)/rate);
+                    segmentCount = Math.ceil(remainingDuration/segmentDuration);
                     deferred.resolve(segmentCount);
                 },
                 function () {
@@ -774,6 +773,8 @@ Dash.dependencies.DashHandler = function () {
         getSegmentCountForDuration: getSegmentCountForDuration
     };
 };
+
+Dash.dependencies.DashHandler.EPSILON = 0.003;
 
 Dash.dependencies.DashHandler.prototype = {
     constructor: Dash.dependencies.DashHandler

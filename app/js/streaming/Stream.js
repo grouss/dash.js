@@ -211,10 +211,10 @@ MediaPlayer.dependencies.Stream = function () {
             var self = this;
 
             if (!!videoController) {
-                videoController.reset(errored, mediaSource);
+                videoController.reset(errored);
             }
             if (!!audioController) {
-                audioController.reset(errored, mediaSource);
+                audioController.reset(errored);
             }
             if (!!mediaSource) {
                 self.mediaSourceExt.detachMediaSource(self.videoModel);
@@ -316,7 +316,7 @@ MediaPlayer.dependencies.Stream = function () {
                                             // TODO : Pass to controller and then pass to each method on handler?
 
                                             videoController = self.system.getObject("bufferController");
-                                            videoController.initialize("video", periodIndex, videoData, buffer, self.videoModel, self.requestScheduler, self.fragmentController);
+                                            videoController.initialize("video", periodIndex, videoData, buffer, self.videoModel, self.requestScheduler, self.fragmentController, mediaSource);
                                             self.debug.log("Video is ready!");
                                         }
 
@@ -388,7 +388,7 @@ MediaPlayer.dependencies.Stream = function () {
                                                     // TODO : How to tell index handler live/duration?
                                                     // TODO : Pass to controller and then pass to each method on handler?
                                                     audioController = self.system.getObject("bufferController");
-                                                    audioController.initialize("audio", periodIndex, primaryAudioData, buffer, self.videoModel, self.requestScheduler, self.fragmentController);
+                                                    audioController.initialize("audio", periodIndex, primaryAudioData, buffer, self.videoModel, self.requestScheduler, self.fragmentController, mediaSource);
                                                     self.debug.log("Audio is ready!");
                                                 }
 
@@ -540,7 +540,10 @@ MediaPlayer.dependencies.Stream = function () {
 
         onPause = function () {
             this.debug.log("Got pause event.");
-            //stopBuffering.call(this);
+
+            if (!this.scheduleWhilePaused) {
+                stopBuffering.call(this);
+            }
         },
 
         onError = function (event) {
@@ -653,7 +656,6 @@ MediaPlayer.dependencies.Stream = function () {
                 function (/*done*/) {
                     if (autoPlay) {
                         self.debug.log("Playback initialized!");
-                        play.call(self);
                         return load.promise;
                     }
                 }
@@ -661,10 +663,8 @@ MediaPlayer.dependencies.Stream = function () {
                 function () {
                     self.debug.log("element loaded!");
                     // only first period stream must be played automatically during playback initialization
-                    if (periodIndex > 0) {
-                        // required to stop unnecessary buffering
-                        pause.call(self);
-                        return;
+                    if (periodIndex === 0) {
+                        play.call(self);
                     }
                 }
             );
@@ -758,6 +758,7 @@ MediaPlayer.dependencies.Stream = function () {
         metricsExt: undefined,
         errHandler: undefined,
         requestScheduler: undefined,
+        scheduleWhilePaused: undefined,
 
         setup: function () {
             this.system.mapHandler("manifestUpdated", undefined, manifestHasUpdated.bind(this));

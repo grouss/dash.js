@@ -40,7 +40,6 @@
 	//Assigns the live response to fake server with appropriate urls
 	function ActualRequest()
 	{
-		debugger;
 		//Base url to get the manifest data
 		var source="http://dashdemo.edgesuite.net/envivio/dashpr/clear/Manifest.mpd";
 		
@@ -66,7 +65,6 @@
 			fakeServer.xhr.useFilters = true;
 			
 			fakeServer.xhr.addFilter(function(method, url) {
-				debugger;
 			  //whenever the this returns true the request will not be faked
 			  return (url.indexOf("http://127.0.0.1:3000/hostedFiles/") != -1);
 			});
@@ -147,7 +145,6 @@
 	 
  function initialize()
  {
-	debugger;
     if(window.location.href.indexOf("runner.html")>0){
         system = new dijon.System();
         system.mapValue("system", system); 
