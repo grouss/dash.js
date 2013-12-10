@@ -553,24 +553,16 @@ MediaPlayer.dependencies.BufferController = function () {
 
                 self.sourceBufferExt.getBufferRange(buffer, segmentTime).then(
                     function (range) {
-                        return Q.when(seeking ? seekTarget : self.indexHandler.getCurrentTime(quality, data)).then(
-                            function (time) {
-                                segmentTime = time;
-                                seeking = false;
+                        seeking = false;
 
-                                if (range !== null) {
-                                    segmentTime = range.end;
-                                }
+                        if (range !== null) {
+                            segmentTime = range.end;
+                        }
 
-                                self.debug.log("Loading the " + type + " fragment for time: " + segmentTime);
-                                self.indexHandler.getSegmentRequestForTime(segmentTime, quality, data).then(
-                                    function (request) {
-                                        deferred.resolve(request);
-                                    },
-                                    function () {
-                                        deferred.reject();
-                                    }
-                                );
+                        self.debug.log("Loading the " + type + " fragment for time: " + segmentTime);
+                        self.indexHandler.getSegmentRequestForTime(segmentTime, quality, data).then(
+                            function (request) {
+                                deferred.resolve(request);
                             },
                             function () {
                                 deferred.reject();
