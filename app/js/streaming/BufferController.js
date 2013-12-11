@@ -611,7 +611,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
         checkIfSufficientBuffer = function () {
             if (waitingForBuffer) {
-                if (bufferLevel < minBufferTime) {
+                if ((bufferLevel < minBufferTime) && (minBufferTime < (duration - this.videoModel.getCurrentTime()))) {
                     if (!stalled) {
                         this.debug.log("Waiting for more " + type + " buffer before starting playback.");
                         stalled = true;
