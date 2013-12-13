@@ -13,14 +13,17 @@
 //This file contains valid MPD strings
 
 
-	var testUrl,testBaseUrl,parser,manifestRes,server,context,isActual = true;
+	var testUrl,testBaseUrl,testVideoUrl,parser,manifestRes,server,context,isActual = true;
 	var mock,fakeServer;
 	var invalidSource="http://127.0.0.1:3000/test/js/utils/hostedFiles/Manifestg.mpd";
+	var segmentSource,source;
+	var unfakedUrl = "http://dash.edgesuite.net/dash264/TestCases/1a/netflix/exMPD_BIP_TC1.mpd";
+	
 
 
 	testUrl = "http://sampleurl/test.mpd";
 	testBaseUrl = "http://sampleurl/";
-	testVideoUrl = "http://sampleurl/mp4-main-multi-h264bl_low-1.m4s";
+	testVideoUrl = "http://sampleurl/video1/Header.m4s";
  
 	setTimeout(initialize,10);
 
@@ -41,43 +44,52 @@
 	function ActualRequest()
 	{
 		//Base url to get the manifest data
-		var source="http://dashdemo.edgesuite.net/envivio/dashpr/clear/Manifest.mpd";
+		source="http://dashdemo.edgesuite.net/envivio/dashpr/clear/Manifest.mpd";
 		
 		//Segment url from different mpd - will be changed later when we get a sample mpd with segment url and mpd size being small
-		var segmentSource = "http://www.digitalprimates.net/dash/streams/gpac/mp4-main-multi-h264bl_low-1.m4s";
+		segmentSource = "http://dash.edgesuite.net/dash264/TestCases/1a/netflix/ElephantsDream_H264BPL30_0100.264.dash";
 		
-		var reqStatus,segStatus;
 		
 		//Two request calls one for manifest content and other for Segment content
+		var reqStatus,segStatus;
+		
+		
+		//segStatus = callRequest(segmentSource);
+		
 		reqStatus = callRequest(source);
-		segStatus = callRequest(segmentSource);
 		
 		if(reqStatus)
 		{
 			//assigns the stub url which will be referred in all the test methods and it will be through fake server
 			reqStatus.url = testUrl;
 			//assigns the stub segment url
-			segStatus.url=testVideoUrl;
+			//segStatus.url=testVideoUrl;
 			
-			//Creates a fake server and assigns urls and responses.
+			 //Creates a fake server and assigns urls and responses.
 			fakeServer = sinon.fakeServer.create();
 			fakeServer.autoRespond = true;
 			fakeServer.xhr.useFilters = true;
 			
 			fakeServer.xhr.addFilter(function(method, url) {
+				//debugger;
 			  //whenever the this returns true the request will not be faked
-			  return (url.indexOf("http://127.0.0.1:3000/hostedFiles/") != -1);
+			  return ((url.indexOf("http://127.0.0.1:3000/hostedFiles/") && url.indexOf(segmentSource) && url.indexOf(unfakedUrl))!= -1);
 			});
 			
 			//manifest stub url and response assigned to fake server
 			fakeServer.respondWith(reqStatus.url,reqStatus.responseText);
 			
-			if(segStatus)
-			{
-				//segment stub url and response assigned to fake server
-				fakeServer.respondWith(segStatus.url,segStatus.response);
-			}
-			fakeServer.respond();
+			
+			/* segStatus.onreadystatechange = function(){
+				if(segStatus.readyState === 4){
+					//segment stub url and response assigned to fake server
+					fakeServer.respondWith(segStatus.url,segStatus.response);
+				}
+			};  */
+			
+			
+			
+			fakeServer.respond(); 
 
 		}
 		
@@ -138,20 +150,33 @@
         } else {
             xmlhr = new ActiveXObject("Microsoft.XMLHTTP");
         }
-        xmlhr.open("GET", url, false);
+		
+		 if(url === segmentSource)
+		{
+			xmlhr.open("GET", url, true);
+			xmlhr.responseType = "arraybuffer";
+			xmlhr.onload = function(){
+				//debugger;
+				if (xmlhr.readyState === 4) return xmlhr;				
+			};
+		} 
+		else
+		{
+			xmlhr.open("GET", url, false);
+		}
         xmlhr.send();
 		return xmlhr;
     }
 	 
  function initialize()
  {
+	//debugger;
     if(window.location.href.indexOf("runner.html")>0){
         system = new dijon.System();
         system.mapValue("system", system); 
         system.mapOutlet("system");
         context = new Dash.di.DashContext();
-        system.injectInto(context);
-        objManifestLoader=system.getObject('manifestLoader');
+		system.injectInto(context);
         Isloaded();
     }
      else

@@ -59,32 +59,20 @@ describe("Stream test Suite", function () {
 	});
 	
 	it("Check Live Start",function(){
-		manifestExt.getLiveStart(manifestRes, periodIndex).then(function (dataLiveStart) {
-			debugger;
-			expect(isNaN(dataLiveStart)).not.toBeTruthy();
-		});       
+		if(manifestRes != undefined)
+		{
+			manifestExt.getLiveStart(manifestRes, periodIndex).then(function (dataLiveStart) {
+				debugger;
+				expect(isNaN(dataLiveStart)).not.toBeTruthy();
+			});       
+		}
 	});	
-	
-	/* it("Check Live Offset",function(){
-		debugger;
-		streams = initStreamData(manifestRes);	
-		streams.play();
-		expect(isNaN(streams.getLiveOffset())).not.toBeTruthy();
-	}); 
-	
-	it("Check Time stamp Offset",function(){
-		debugger;
-		streams = initStreamData(manifestRes);	
-		streams.play();
-		expect(isNaN(streams.getTimestampOffset())).not.toBeTruthy();
-	}); */
 	
 	it("Duration initilaised",function(){
 		manifestExt.getDuration(manifestRes, false).then(function (duration) {
 			expect(isNaN(duration)).not.toBeTruthy();
 		});      
 	});
-	
 	
 	it("Check Stream Duration",function(){	
 		debugger;

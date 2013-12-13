@@ -143,12 +143,16 @@
 	
 	<!-- List of reference missing in dashall and dash.min -->	
 	
-	 <script src="./test/js/utils/ValidateUrl.js"></script>  
+	 <script src="./test/js/utils/ValidateUrl.js"></script> 
 	
-	
+	<script src=".\app\js\streaming\BufferExtensions.js"></script>	 
+	 
+	 	<script src=".\app\js\dash\BaseURLExtensions.js"></script>
+		<script src=".\app\js\dash\DashParser.js"></script>
+		<script src=".\app\js\dash\DashHandler.js"></script>
 	<script src=".\app\js\streaming\AbrController.js"></script>
-	<script src=".\app\js\dash\DashParser.js"></script>
 	<script src=".\app\js\streaming\ManifestLoader.js"></script>
+	
 	<script src=".\app\js\streaming\BufferController.js"></script>
 	<script src=".\app\js\dash\DashMetricsExtensions.js"></script>
 	<script src=".\app\js\dash\DashManifestExtensions.js"></script>
@@ -160,9 +164,9 @@
 	<script src=".\app\js\streaming\SchedulerExtensions.js"></script>
 	<script src=".\app\js\streaming\SchedulerModel.js"></script>
 	<script src=".\app\js\streaming\FragmentController.js"></script>
-	<script src=".\app\js\streaming\FragmentModel.js"></script>
+	<script src=".\app\js\streaming\MediaSourceExtensions.js"></script>
+	<script src=".\app\js\streaming\SourceBufferExtensions.js"></script>
 	<script src=".\app\js\streaming\FragmentLoader.js"></script>
-	
     <script src=".\app\js\streaming\ProtectionController.js"></script>
     
     <script src=".\app\js\streaming\ProtectionExtensions.js"></script>
@@ -172,6 +176,8 @@
 	<script src="./test/js/utils/MPDfiles.js"></script> 
     
 	<script src=".\app\js\streaming\StreamController.js"></script>
+	
+	<script src=".\app\js\streaming\FragmentModel.js"></script>
 	
 	<script src="index.html" ></script> 
 	 
@@ -189,12 +195,19 @@
    
     <!-- Refernce for test methods -->
 	
+	
+	  <script src="./test/js/streaming/RequestScheduler_Suite.js"></script>
+	  
+	    <script src="./test/js/dash/DashHandler_Suite.js"></script>
+	
+ 	   <script src="./test/js/dash/BaseURLExtensions_Suite.js"></script> 
+	
 	<script src="./test/js/streaming/FragmentModel_Suite.js"></script> 
 	
-	     <script src="./test/js/streaming/FragmentController_Suite.js"></script>  
+	<script src="./test/js/streaming/FragmentController_Suite.js"></script>  
 	
-	<script src="./test/js/streaming/BufferController_Suite.js"></script>
-	
+	 <script src="./test/js/streaming/BufferController_Suite.js"></script>	 
+	 
 	<script src="./test/js/streaming/VTTParser_Suite.js"></script> 
 	
     <script src="./test/js/dash/DashManifestExtensionsNeg_Suite.js"></script> 
@@ -207,15 +220,15 @@
 	
 	 <script src="./test/js/streaming/DashMetricsExtensions_Suite.js"></script> 
     
-    <script src="./test/js/dash/DashHandler_Suite.js"></script>
+
     
 	<script src="./test/js/dash/DashManifestExtensions_Suite.js"></script>
     
-    <script src="./test/js/dash/BaseURLExtensions_Suite.js"></script>
+ 
     
      <script src="./test/js/streaming/MediaPlayer_Suite.js"></script>  
 	
-	 
+	
 	
 	<script src="./test/js/streaming/Capabilities_Suite.js"></script> 
 	
@@ -227,7 +240,7 @@
     
     <script src="./test/js/streaming/ManifestLoader_Suite.js"></script> 
     
-
+     
     
     <script src="./test/js/streaming/SourceBufferExtensions_Suite.js"></script>     
     
@@ -250,7 +263,8 @@
 	
 	<script src="./test/js/streaming/TextTrackExtensions_Suite.js"></script> 
 	
-	<script src="./test/js/streaming/Scenario_Suite.js"></script> 
+ <script src="./test/js/streaming/Scenario_Suite.js"></script> 
+	
 	
 	
 

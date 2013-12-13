@@ -56,6 +56,7 @@
 		});
 		
 		it("Create Source Buffer for Text Data",function(){
+			debugger;
 			var sourceBufferExt,mimeType = "application/mp4";
 			sourceBufferExt = system.getObject("sourceBufferExt");
 			

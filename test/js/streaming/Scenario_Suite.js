@@ -114,7 +114,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					}); 
            });
            
@@ -128,7 +133,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					}); 
            });
             it("checking object data without min buffer in  manifest", function () {
@@ -141,7 +151,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					}); 
            });
            
@@ -156,7 +171,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					}); 
            });
            
@@ -170,7 +190,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					}); 
            });
            
@@ -184,7 +209,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					}); 
            });
            
@@ -198,7 +228,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					});
            });
            
@@ -212,7 +247,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					});
            });
        });
@@ -229,7 +269,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					});
            });
            
@@ -243,7 +288,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					});
            });
            
@@ -257,7 +307,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});		
 					});
            });
            it("checking object data with id attribute", function () {
@@ -270,7 +325,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -284,7 +344,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -298,7 +363,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -312,7 +382,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -326,7 +401,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -340,7 +420,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            it("checking object data with out minimum buffer attribute", function () {
@@ -353,7 +438,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -367,7 +457,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            
@@ -381,7 +476,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});	
 					});
            });
            it("checking object data with  maxSubsegmentDuration attribute", function () {
@@ -394,7 +494,12 @@ if(window.location.href.indexOf("runner.html")>0)
 						debugger;
 						bufferController = system.getObject("bufferController");
 						streamController.play();
-						expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						waitsFor(function(){
+							if (bufferController.metricsModel.getMetricsFor("video").PlayList[0] != undefined) return true;
+						},"waiting for playlist",100);
+						runs(function(){
+							expect(bufferController.metricsModel.getMetricsFor("video").PlayList[0].mstart).toBe(0);	
+						});
 					});
            });
            

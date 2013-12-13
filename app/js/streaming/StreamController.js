@@ -148,6 +148,7 @@
          * Handles the current stream buffering end moment to start the next stream buffering
          */
         onStreamBufferingEnd = function() {
+			debugger;
             var nextStream = getNextStream();
             if (nextStream) {
                 nextStream.seek(nextStream.getStartTime());
@@ -160,6 +161,7 @@
         },
 
         getStreamForTime = function(time) {
+			debugger;
             var duration = 0,
                 stream = null;
 
@@ -175,6 +177,7 @@
 
         //  TODO move to ???Extensions class
         createVideoModel = function() {
+			debugger;
             var model = this.system.getObject("videoModel"),
                 video = document.createElement("video");
             model.setElement(video);
@@ -182,12 +185,14 @@
         },
 
         removeVideoElement = function(element) {
+			debugger;
             if (element.parentNode) {
                 element.parentNode.removeChild(element);
             }
         },
 
         switchStream = function(from, to, seekTo) {
+			debugger;
 
             if(!from || !to || from === to) return;
 

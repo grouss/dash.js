@@ -83,6 +83,7 @@ MediaPlayer.dependencies.BufferExtensions = function () {
         },
 
         decideBufferLength: function (minBufferTime, duration/*, waitingForBuffer*/) {
+			debugger;
             if (MediaPlayer.dependencies.BufferExtensions.DEFAULT_MIN_BUFFER_TIME < duration && minBufferTime < duration) {
                 minBufferTarget = Math.max(MediaPlayer.dependencies.BufferExtensions.DEFAULT_MIN_BUFFER_TIME, minBufferTime);
             } else if (minBufferTime >= duration) {

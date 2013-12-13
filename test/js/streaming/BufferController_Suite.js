@@ -1,7 +1,7 @@
 // The copyright in this software is being made available under the BSD License, included below. This software may be subject to other third party and contributor rights, including patent rights, and no such rights are granted under this license.
 //
 // Copyright (c) 2013, Microsoft Open Technologies, Inc.
-//
+//	
 // All rights reserved.
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 //     -             Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
@@ -209,36 +209,6 @@ if(window.location.href.indexOf("runner.html")>0)
 				expect(playlisttrace.stopreason).toBe("rebuffering");
             });
 			
-	/* 		it("Buffer Initialization to check live Time stamp Offset ", function () {
-				debugger;
-                currentTime = new Date();
-				var fragmentController = system.getObject('fragmentController');
-				var manifestModel = system.getObject('manifestModel');
-				manifestModel.setValue(manifestRes);
-				bufferController.setFragmentController(fragmentController);
-				bufferController.initialize("video",0,manifestRes.Period.AdaptationSet[0],0,0,stream.getVideoModel(),requestScheduler,fragmentController);
-				waitsFor(function(){
-					if(bufferController.getTimestampOffset() != undefined)
-					return true;
-				},"buffer getting initialized,100");
-				runs(function(){
-					debugger;
-					expect(isNaN(bufferController.getTimestampOffset())).not.toBeTruthy();
-				});  
-            });
-			
-			it("Buffer Initialization to check live Offset ", function () {
-                currentTime = new Date();
-				bufferController.initialize("video",0,stream.manifestModel.getValue(),0,0,stream.getVideoModel());
-				waitsFor(function(){
-					if(bufferController.getTimestampOffset() != undefined)
-					return true;
-				},"buffer getting initialized,100");
-				runs(function(){
-					expect(isNaN(bufferController.getLiveOffset())).not.toBeTruthy();
-				});
-            }); */
-			
 			it("Buffer Initialization to Auto Switch Bitrate", function () {
                 debugger;
                 currentTime = new Date();
@@ -246,7 +216,7 @@ if(window.location.href.indexOf("runner.html")>0)
 				var manifestModel = system.getObject('manifestModel');
 				manifestModel.setValue(manifestRes);
 				bufferController.setFragmentController(fragmentController);
-				bufferController.initialize("video",0,manifestRes.Period.AdaptationSet[0],0,0,stream.getVideoModel(),requestScheduler,fragmentController);
+				bufferController.initialize("video",0,manifestRes.Period.AdaptationSet[0],null,stream.getVideoModel(),requestScheduler,fragmentController,null);
 				waitsFor(function(){
 					if(bufferController.getAutoSwitchBitrate() != undefined)
 					return true;
@@ -255,6 +225,120 @@ if(window.location.href.indexOf("runner.html")>0)
 					expect(bufferController.getAutoSwitchBitrate()).toBe(true);
 				}); 
 			});	
+			
+			it("Min buffer time",function(){
+				debugger;
+				var manifestModel = system.getObject("manifestModel");
+		
+				manifestModel.setValue(manifestRes);
+				bufferController.initialize("video",0,manifestRes.Period.AdaptationSet[0],null,null,null,null,null);
+				
+				waitsFor(function(){
+					if (bufferController.getMinBufferTime() != undefined) return true;
+				},"bufferController is not initialized",100);
+				runs(function(){
+					debugger;
+					var result = bufferController.getMinBufferTime();
+					expect(isNaN(result)).not.toBeTruthy();
+				});	
+			});
+			
+			it("Resetting buffer",function(){
+				var fragmentController = system.getObject('fragmentController');
+				
+				bufferController.setVideoModel(video);
+				bufferController.setFragmentController(fragmentController);
+				
+				spyOn(bufferController, 'reset').andCallThrough();
+				bufferController.reset(true);
+				
+				expect(bufferController.reset).toHaveBeenCalled();
+				expect(bufferController.reset).toHaveBeenCalledWith(true);
+				expect(bufferController.reset.callCount).toEqual(1);
+			});
+			
+			it("Resetting buffer without errored",function(){
+				debugger;
+				var fragmentController = system.getObject('fragmentController');
+				
+				bufferController.setVideoModel(video);
+				bufferController.setFragmentController(fragmentController);
+				
+				bufferController.reset(false);
+				expect(bufferController.updateBufferState()).not.toBeDefined();
+			});
+			
+			
+		it("attach Buffer and check the status of buffer",function(){
+			debugger;
+			var mediaSourceExt, sourceBufferExt , mediaSource, buffer, codec = "video/mp4;codecs="+"avc1.4D400D" , bufferController,requestScheduler,manifestModel;
+			
+			mediaSourceExt = system.getObject("mediaSourceExt");
+			sourceBufferExt = system.getObject("sourceBufferExt");
+			bufferController = system.getObject("bufferController");
+			requestScheduler = system.getObject("requestScheduler");
+			manifestModel = system.getObject("manifestModel");
+			var fragmentController = system.getObject("fragmentController");
+			
+			manifestModel.setValue(manifestRes);
+			
+			bufferController.initialize("video",0,manifestRes.Period.AdaptationSet[0],null,video,requestScheduler,fragmentController,null);				
+			waits(1000);
+			waitsFor(function(){
+				debugger;
+				if (bufferController.getMinBufferTime() != undefined) return true;
+			},"waiting for buffer initialization",100);
+			runs(function(){
+				debugger;
+				var result = bufferController.isReady();
+				expect(result).toBeTruthy();
+			});
+		});
+		
+		it("attach Buffer and buffer completion status",function(){
+			var mediaSourceExt, sourceBufferExt , mediaSource, buffer, codec = "video/mp4;codecs="+"avc1.4D400D" , bufferController,requestScheduler,manifestModel;
+			
+			mediaSourceExt = system.getObject("mediaSourceExt");
+			sourceBufferExt = system.getObject("sourceBufferExt");
+			bufferController = system.getObject("bufferController");
+			requestScheduler = system.getObject("requestScheduler");
+			manifestModel = system.getObject("manifestModel");
+			var fragmentController = system.getObject("fragmentController");
+			
+			manifestModel.setValue(manifestRes);
+			
+			bufferController.initialize("video",0,manifestRes.Period.AdaptationSet[0],null,video,requestScheduler,fragmentController,null);				
+			waits(1000);
+			waitsFor(function(){
+				if (bufferController.getMinBufferTime() != undefined) return true;
+			},"waiting for buffer initialization",100);
+			runs(function(){
+				var result = bufferController.isBufferingCompleted();
+				expect(result).not.toBeTruthy();
+			});
+		});
+		
+		it("attach Buffer and buffer completion status",function(){
+			var mediaSourceExt, sourceBufferExt , mediaSource, buffer, codec = "video/mp4;codecs="+"avc1.4D400D" , bufferController,requestScheduler,manifestModel;
+			
+			mediaSourceExt = system.getObject("mediaSourceExt");
+			sourceBufferExt = system.getObject("sourceBufferExt");
+			bufferController = system.getObject("bufferController");
+			requestScheduler = system.getObject("requestScheduler");
+			manifestModel = system.getObject("manifestModel");
+			var fragmentController = system.getObject("fragmentController");
+			
+			manifestModel.setValue(manifestRes);
+			
+			
+		});
+		
+		it("Check Data",function(){
+			debugger;
+			bufferController.setData(manifestRes.Period.AdaptationSet[0]).then(function(){
+				expect(bufferController.getData() === manifestRes.Period.AdaptationSet[0]).toBeTruthy();				
+			});
+		});
 			
 		function createObject(system) {
 			debugger;

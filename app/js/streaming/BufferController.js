@@ -71,6 +71,7 @@ MediaPlayer.dependencies.BufferController = function () {
         },
 
         clearPlayListTraceMetrics = function (endTime, stopreason) {
+			debugger;
             var duration = 0,
                 startTime = null;
 
@@ -87,6 +88,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
         // TODO : Remove?
         initializeLive = function () {
+			debugger;
             var manifest = this.manifestModel.getValue(),
                 isLive = this.manifestExt.getIsLive(manifest);
 
@@ -174,6 +176,7 @@ MediaPlayer.dependencies.BufferController = function () {
         },
 
         getRepresentationForQuality = function (quality, data) {
+			debugger;
             var representation = null;
             if (data && data.Representation_asArray && data.Representation_asArray.length > 0) {
                 representation = data.Representation_asArray[quality];
@@ -259,6 +262,7 @@ MediaPlayer.dependencies.BufferController = function () {
 		},
 
         appendToBuffer = function(data, quality) {
+			debugger;
             var self = this,
                 isAppendingRejectedData = (data == rejectedBytes),
                 // if we append the rejected data we should use the stored promise instead of creating a new one
@@ -278,9 +282,11 @@ MediaPlayer.dependencies.BufferController = function () {
 
             Q.when((isAppendingRejectedData) || ln < 2 || deferredAppends[ln - 2].promise).then(
                 function() {
+					debugger;
                     if (!buffer) return;
                     clearBuffer.call(self).then(
                         function() {
+							debugger;
                             if (quality !== lastQuality) {
                                 deferred.resolve();
                                 if (isAppendingRejectedData) {
@@ -292,8 +298,10 @@ MediaPlayer.dependencies.BufferController = function () {
 
                             Q.when(deferredBuffersFlatten ? deferredBuffersFlatten.promise : true).then(
                                 function() {
+									debugger;
                                     self.sourceBufferExt.append(buffer, data, self.videoModel).then(
                                         function (/*appended*/) {
+											debugger;
                                             if (isAppendingRejectedData) {
                                                 deferredRejectedDataAppend = null;
                                                 rejectedBytes = null;
@@ -358,6 +366,7 @@ MediaPlayer.dependencies.BufferController = function () {
         },
 
         updateBufferLevel = function() {
+			debugger;
             if (!data && !buffer) return Q.when(false);
 
             var self = this,
@@ -366,6 +375,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
             self.sourceBufferExt.getBufferLength(buffer, currentTime).then(
                 function(bufferLength) {
+					debugger;
                     bufferLevel = bufferLength;
                     self.metricsModel.addBufferLevel(type, new Date(), bufferLevel);
                     checkGapBetweenBuffers.call(self);
@@ -698,14 +708,17 @@ MediaPlayer.dependencies.BufferController = function () {
         },
 
         getRequiredFragmentCount = function(quality) {
+			debugger;
             var self =this,
                 playbackRate = self.videoModel.getPlaybackRate(),
                 actualBufferedDuration = bufferLevel / Math.max(playbackRate, 1),
                 deferred = Q.defer();
                 self.bufferExt.getRequiredBufferLength(waitingForBuffer, self.requestScheduler.getExecuteInterval(self)/1000, isLiveStream, duration).then(
                     function (requiredBufferLength) {
+						debugger;
                         self.indexHandler.getSegmentCountForDuration(quality, data, requiredBufferLength, actualBufferedDuration).then(
                             function(count) {
+								debugger;
                                 deferred.resolve(count);
                             }
                         );
