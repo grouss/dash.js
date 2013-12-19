@@ -17,6 +17,7 @@ describe("Manifest Updater Suite", function () {
             context,
             system,
             manifestObj,
+			manifestModel,
             flag;
            
              beforeEach(function () {
@@ -25,24 +26,29 @@ describe("Manifest Updater Suite", function () {
                 system.mapOutlet("system");
                 context = new Dash.di.DashContext();
                 system.injectInto(context);
+				
+				manifestUpdater=system.getObject('manifestUpdater');
+				manifestModel = system.getObject("manifestModel");
+				manifestModel.setValue(manifestRes);				
             });
            
-             it("setup and all other methods in Manifest Updater Class", function(){
-                var result =false;
-				var source = "http://dash.edgesuite.net/envivio/dashpr/clear/Manifest.mpd";
-                manifestUpdater=system.getObject('manifestUpdater');
-                manifestLoader = system.getObject('manifestLoader');
-                
-                manifestLoader.load(source).then(
-                    function (manifestResult) {
-                        waitsFor(function () {
-                            if (manifestObj) return true;
-                        }, "data is null", 100);
-                        runs(function () {
-                             manifestUpdater.init();
-                            expect(manifestObj.mpdUrl).toEqual(manifestUpdater.manifestModel.getValue().mpdUrl);
-                        });
-                });
-             });
+            it("setup and all other methods in Manifest Updater Class", function(){                  				
+				expect(manifestRes.mpdUrl).toEqual(manifestUpdater.manifestModel.getValue().mpdUrl);
+            });
+			
+			it("Check manifest object value after initialization",function(){
+				debugger;							
+				manifestUpdater.setup();
+				waits(1000);
+				waitsFor(function(){
+					if(manifestUpdater.manifestModel.getValue() != undefined) return true;
+				},"waiting to update",100);
+				runs(function(){
+					var result = manifestUpdater.manifestModel.getValue();					
+					manifestUpdater.stop();
+					waits(1000);
+					expect(result).toEqual(manifestRes);
+				}); 
+			});
              
     });

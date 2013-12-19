@@ -69,8 +69,7 @@
  	 });
 	
 	if(window.location.href.indexOf("runner.html")>0)
-	{
-	
+	{	
 		 it("createSourceBuffer", function(){
 			debugger;
 
@@ -83,6 +82,7 @@
 				};
 				 
 			mediaSource = InitMediaSource();
+			waits(1000);
 			
 			waits(1000);			
 			waitsFor(function () {
@@ -104,12 +104,10 @@
 			});
 		 }); 
 		 
-		 it("check buffer Range", function(){
-			debugger;
-			
+		it("waiting for Update operation to end with actual buffer", function(){
+			debugger;			
 			mediaSource = InitMediaSource();
-			
-			waits(1000);			
+			waits(1000);
 			waitsFor(function () {
 			if(mediaSource != undefined)
 				return true;		
@@ -118,65 +116,311 @@
 			runs(function(){
 				debugger;
 				sourceBufferExtension.createSourceBuffer(mediaSource, codec).then(function(result){				
-					buffer = result;										
-				});
-				waitsFor(function(){
-					if(buffer != undefined) return true;
-				},"data null",100);
-				runs(function(){
 					debugger;
-					var res = sourceBufferExtension.getBufferRange(buffer,0);
-					expect(res).not.toBe(null);
+					buffer = result;
+					sourceBufferExtension.waitForUpdateEnd(buffer).then(function(result){
+						expect(res).toBeTruthy();	
+					});			
 				});
 			});	
 		}); 
-	}
-	 
-	/**
- 	it("getBufferLength", function(){
-		debugger;
- 		var buffer = null,
- 			time = null,
- 			result;
+		
+		it("waiting for Update operation to end without actual buffer", function(){
+			debugger;	
+			var buffer = {},promise;
+			buffer.addEventListener = null;
 			
-		mediaSource = InitMediaSource();
-		
-		waits(1000);			
-		waitsFor(function () {
-		if(mediaSource != undefined)
-			return true;		
-		}, "data is null", 100);
-		
-		sourceBufferExtension.createSourceBuffer(mediaSource, codec).then(function(result){				
-			buffer = result;										
-		});
-		waitsFor(function(){
-			if(buffer != undefined) return true;
-		},"data null",100);
-		runs(function(){
-			result = sourceBufferExtension.getBufferLength(buffer, time);
-			expect(result).not.toBeNull();
-		});
- 	}); 
- 	
- 	it("append", function(){
-		debugger;
- 		var buffer = null,
- 			expectedBuffer = null,
- 			bytes = null;
- 			
- 		sourceBufferExtension.append(buffer, bytes);
- 		expect(buffer).toContains(expectedBuffer);
- 	}); */
+			var flag = false,
+				success = function(result) {
+					debugger;
+					flag = true;
+				},
+				failure = function(error) {
+					debugger;
+					flag = true;
+				};
+				
+			runs(function(){
+				debugger;
+				promise = sourceBufferExtension.waitForUpdateEnd(buffer);
+				promise.then(success, failure);
+			});
+			
+			waitsFor(function(){
+				return flag;
+			});
+			
+			runs(function(){
+				debugger;
+				expect(flag).toBeTruthy();
+			});
+		}); 
+	}
 	
-	it("abort", function(){
- 		var buffer = null,
- 			expectedBuffer = null,
+ 	it("append", function(){
+ 		var res,
  			bytes = null;
- 			
- 		sourceBufferExtension.abort(buffer);
- 		expect(buffer).toEqual(expectedBuffer);
+			
+ 		mediaSource = InitMediaSource();
+		waits(1000);
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);	
+		runs(function(){
+			debugger;
+			sourceBufferExtension.createSourceBuffer(mediaSource,codec).then(function(buffer){
+				debugger;
+				var flag = false,
+				success = function(result) {
+					debugger;
+					res = result;
+					flag = true;
+				},
+				failure = function(error) {
+					debugger;
+					res = error;
+					flag = true;
+				};
+				
+				runs(function(){
+					debugger;
+					promise = sourceBufferExtension.append(buffer,bytes);
+					promise.then(success, failure);
+				});
+				
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(res.error).toContain("Type Error");
+				});
+			});
+		});
  	}); 
+
+	
+	it("Get all the buffer Ranges with actual buffer",function(){	
+		debugger;
+		mediaSource = InitMediaSource();
+		waits(1000);
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);
+		runs(function(){
+			debugger;
+			sourceBufferExtension.createSourceBuffer(mediaSource,codec).then(function(buffer){
+				debugger;
+				sourceBufferExtension.getAllRanges(buffer).then(function(result){					
+					expect(result.length).toEqual(0);
+				});
+			});
+		});
+	});
+	
+	it("Get all the buffer Ranges without actual buffer",function(){	
+		debugger;
+		var buffer = null;
+		var errHandler = system.getObject("errHandler");
+		sourceBufferExtension.getAllRanges(buffer).then(function(result){					
+			debugger;
+			errHandler.mediaSourceError(result);
+			expect(result).toBe(null);
+		});
+	});
+	
+	it("Remove Buffer without actual buffer",function(){
+		debugger;	
+		var	res;
+		mediaSource = InitMediaSource();
+		waits(1000);
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);
+		runs(function(){
+			debugger;
+			sourceBufferExtension.createSourceBuffer(mediaSource,codec).then(function(buffer){
+				debugger;
+				var flag = false,
+				success = function(result) {
+					res = result;
+					flag = true;
+				},
+				failure = function(error) {
+					res = error;
+					flag = true;
+				};
+				
+				runs(function(){
+					debugger;
+					promise = sourceBufferExtension.remove(buffer,0,10,5,mediaSource);
+					promise.then(success, failure);
+				});
+				
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(res.code).toEqual(15);
+				});
+			});
+		});
+	});
+	
+	it("Remove Buffer with actual value",function(){
+		debugger;
+		var res;
+		mediaSource = InitMediaSource();
+		waits(1000);
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);
+		runs(function(){
+			debugger;
+			sourceBufferExtension.createSourceBuffer(mediaSource,codec).then(function(buffer){
+				debugger;
+				buffer.remove = function(start,end){};
+				var flag = false,
+				success = function(result) {
+					debugger;
+					flag = true;
+				},
+				failure = function(error) {
+					debugger;
+					flag = true;
+				};
+				
+				runs(function(){
+					debugger;
+					promise = sourceBufferExtension.remove(buffer,0,10,5,mediaSource);
+					promise.then(success, failure);
+				});
+				
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(flag).toBeTruthy();
+				});
+			});
+		});
+	});
+	
+	it("abort with actual buffer", function(){	
+		var	res;
+		mediaSource = InitMediaSource();
+		waits(1000);
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);
+		runs(function(){
+			debugger;
+			sourceBufferExtension.createSourceBuffer(mediaSource,codec).then(function(buffer){
+				debugger;
+				buffer.abort=function(){};
+				mediaSource.readyState="open";
+				
+				var flag = false,
+				success = function(result) {
+					res = result;
+					flag = true;
+				},
+				failure = function(error) {
+					res = error;
+					flag = true;
+				};
+				
+				runs(function(){
+					debugger;
+					promise = sourceBufferExtension.abort(mediaSource,buffer);
+					promise.then(success, failure);
+				});
+				
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(flag).toBeTruthy();
+				}); 		
+				
+			});
+		}); 
+	});
+	
+	it("abort without actual buffer", function(){	
+		var	res;
+		mediaSource = InitMediaSource();
+		waits(1000);
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);
+		runs(function(){
+			debugger;
+				var buffer = null;
+				mediaSource.readyState="open";
+				
+				var flag = false,
+				success = function(result) {
+					res = result;
+					flag = true;
+				},
+				failure = function(error) {
+					debugger;
+					res = error;
+					flag = true;
+				};
+				
+				runs(function(){
+					debugger;
+					promise = sourceBufferExtension.abort(mediaSource,buffer);
+					promise.then(success, failure);
+				});
+				
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(res.stack).not.toBe(null);
+				}); 
+		}); 
+	});
+	
+	
+	it("Check Buffer Range",function(){
+		debugger;
+		mediaSource = InitMediaSource();
+		waitsFor(function(){
+			if(mediaSource != undefined) return true;
+		},"waiting for media Source",100);
+		
+		runs(function(){
+			debugger;
+			sourceBufferExtension.createSourceBuffer(mediaSource,codec).then(function(buffer){
+				debugger;
+				var timeRanges =[],bufferedTimes=[];
+				timeRanges.start =0;
+				timeRanges.end =10;
+				bufferedTimes.push(timeRanges);
+				buffer.buffered[0]=bufferedTimes;
+				var result = sourceBufferExtension.getBufferRange(buffer,5);
+				expect(result).not.toBe(null);	
+			});
+		});
+	});
 	
 	function InitMediaSource()
 	{
@@ -186,6 +430,7 @@
 		video.setElement($(element)[0]);	
 		
 		mediaSourceExt.createMediaSource().then(function(source){
+			debugger;
 			mediaSource = source;	
 			mediaSourceExt.attachMediaSource(mediaSource, video);
 		});

@@ -57,11 +57,5 @@
 			expect(isNaN(result)).toBeTruthy();
 		});
 		
-		/* it("Check the least buffer level",function(){
-			debugger;
-			var bufferExtensions = MediaPlayer.dependencies.BufferExtensions();
-			var result = bufferExtensions.getLeastBufferLevel();
-			alert("result =" +result);
-			
-		}); */
+		
 });

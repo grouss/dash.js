@@ -15,23 +15,26 @@
 describe("MediaSourceExtensions Test Suite", function(){
 	var extensions = null,
 		codec = null,
-		element = null;
+		element = null,
+		video;
 	
 	beforeEach(function(){
 		extensions = new MediaPlayer.dependencies.MediaSourceExtensions();
 		codec = 'video/mp4; codecs="avc1.4D400D"';
-		element = document.createElement('video');		
+		element = document.createElement('video');
+		$(element).autoplay = true;
+		video = system.getObject("videoModel");
+		video.setElement($(element)[0]);
 	});
 	
 	it("attachMediaSource", function () {
-		// set Element src to null ( since we test to ensure the source has been set )
-		element.src = null;
-		
+		debugger;
+		element.src = null;		
 		// since we do not care what the source is, we will pass in 
 		// a new Blob object and make sure the element.src is not null.
 		var source = new Blob();
 		
-		extensions.attachMediaSource(source, element);
+		extensions.attachMediaSource(source, video);
 		expect(element.src).not.toBeNull();
 	});
 	
@@ -61,6 +64,20 @@ describe("MediaSourceExtensions Test Suite", function(){
 		runs(function(){
 			expect(successResult).not.toBeNull();
 			expect(failureError).toBeNull();
+		});
+	});
+	
+	it("detachMediaSource",function(){		
+		extensions.detachMediaSource(video).then(function(result){
+			expect(result).toBe(true);			
+		})
+	});
+	
+	it("signal End Of Stream",function(){
+		var source = {};
+		source.endOfStream = function(){return true};
+		extensions.signalEndOfStream(source).then(function(result){
+			expect(result).toBe(true);	
 		});
 	});
 });
