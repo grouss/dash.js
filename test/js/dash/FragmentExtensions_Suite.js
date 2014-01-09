@@ -12,7 +12,7 @@
 
  
  describe("Fragment Extensions Test Suite", function(){
-    var baseUrl, system, fragmentExtn;
+    var baseUrl, system, fragmentExtn,response;
     
     beforeEach(function(){
       
@@ -25,7 +25,8 @@
         context = new Dash.di.DashContext();
         system.injectInto(context);
 
-        fragmentExtn = system.getObject("fragmentExt");
+        fragmentExtn = system.getObject("fragmentExt");	
+		fakeServer.restore();
         
     });
     
@@ -46,6 +47,145 @@
         var result = (typeof fragmentExtn.loadFragment);
         expect(result).toEqual('function');
     });
+	
+	it("loading fragments to check version",function(){
+		debugger;
+		fragmentExtn.loadFragment(segmentSource).then(function(result){
+			expect(result.version).toEqual(1);			
+		});		
+	});
+	
+	it("loading fragments to check media decode time",function(){
+		debugger;
+		fragmentExtn.loadFragment(segmentSource).then(function(result){
+			expect(isNaN(result.base_media_decode_time)).not.toBeTruthy();			
+		});		
+	});
+	
+	it("parsing data to check version",function(){
+		debugger;
+			response = GetResponse();
+			waitsFor(function(){
+				if (response != undefined) return true;
+			},"waits for response data",100)
+			
+			runs(function(){
+				debugger;
+				var promise,flag = false,res,
+				success = function(result) {
+					res = result;
+					flag = true;
+				},
+				failure = function(error) {
+					debugger;
+					res = error;
+					flag = true;
+				};
+				runs(function(){
+					debugger;
+					promise = fragmentExtn.parseTFDT(response);
+					promise.then(success,failure);
+				});
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(res.version).toEqual(1);			
+				});
+			});
+	});
+	
+	it("parsing data to check media decode time",function(){
+		debugger;
+			if(response != undefined)
+			{
+				var promise,flag = false,res,
+				success = function(result) {
+					res = result;
+					flag = true;
+				},
+				failure = function(error) {
+					debugger;
+					res = error;
+					flag = true;
+				};
+				runs(function(){
+					debugger;
+					promise = fragmentExtn.parseTFDT(response);
+					promise.then(success,failure);
+				});
+				
+				waitsFor(function(){
+					return flag;
+				});
+				
+				runs(function(){
+					debugger;
+					expect(isNaN(res.base_media_decode_time)).not.toBeTruthy();
+				});
+			}
+	});
+	
+	it("parsing sidx to check earliest_presentation_time",function(){
+		debugger;
+			if(response != undefined)
+			{
+				try{
+					fragmentExtn.parseSIDX(response).then(function(result){
+						debugger;
+						expect(isNaN(result.earliest_presentation_time)).not.toBeTruthy();
+					});
+				}
+				catch(e){
+					exception = e;
+				}
+				
+				if (exception) {
+					expect(exception).toBeDefined();
+				}
+			}
+	});
+	
+	it("parsing sidx to check timescale",function(){
+		debugger;
+			if(response != undefined)
+			{
+				try{
+					fragmentExtn.parseSIDX(response).then(function(result){
+						debugger;
+						expect(isNaN(result.timescale)).not.toBeTruthy();
+					});
+				}
+				catch(e){
+					exception = e;
+				}
+				
+				if (exception) {
+					expect(exception).toBeDefined();
+				}
+			}
+	});
+	
+	function GetResponse()
+	{
+		debugger;		
+		var xmlhr = new XMLHttpRequest();	
+		xmlhr.open("GET", segmentSource, true);
+		xmlhr.responseType = "arraybuffer";
+		xmlhr.onload = function(){
+			debugger;
+			if (xmlhr.readyState === 4) {
+				response = xmlhr.response;
+			}
+		};
+		xmlhr.send();
+		return response;
+	}
+	
+	
     
      if(window.location.href.indexOf("runner.html")==0)
         {

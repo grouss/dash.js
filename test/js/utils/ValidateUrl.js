@@ -47,7 +47,7 @@
 		source="http://dashdemo.edgesuite.net/envivio/dashpr/clear/Manifest.mpd";
 		
 		//Segment url from different mpd - will be changed later when we get a sample mpd with segment url and mpd size being small
-		segmentSource = "http://dash.edgesuite.net/dash264/TestCases/1a/netflix/ElephantsDream_H264BPL30_0100.264.dash";
+		segmentSource = "http://dashdemo.edgesuite.net/envivio/dashpr/clear/video5/3.m4s";
 		
 		
 		//Two request calls one for manifest content and other for Segment content
@@ -100,7 +100,8 @@
 		var parser = system.getObject("parser");
 		parser.parse(reqStatus.responseText, testBaseUrl).then(
 		function (manifest) {
-			manifest.mpdUrl = testUrl;					
+			manifest.mpdUrl = testUrl;	
+			manifest.minimumUpdatePeriod = "1";
 			
 			//Contructs a Adaptation set with above segment url
 			//Segment Url appends with base url and testVideoUrl is generated 			
