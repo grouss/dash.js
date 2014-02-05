@@ -242,6 +242,10 @@ MediaPlayer.dependencies.BufferController = function () {
                                             function(lastRequest) {
                                                 if ((lastRequest.index - 1) === request.index && !isBufferingCompleted) {
                                                     isBufferingCompleted = true;
+                                                    if (stalled) {
+                                                        stalled = false;
+                                                        self.videoModel.stallStream(type, stalled);
+                                                    }
                                                     setState.call(self, READY);
                                                     self.system.notify("bufferingCompleted");
                                                 }
