@@ -48,7 +48,7 @@ MediaPlayer.dependencies.BufferController = function () {
         isQuotaExceeded = false,
         rejectedBytes = null,
         fragmentDuration = 0,
-        rejectTime = null,
+        appendingRejectedData = false,
         mediaSource,
 
         type,
@@ -305,7 +305,7 @@ MediaPlayer.dependencies.BufferController = function () {
 
                                             // we should resume request scheduling after all peinding segments are appended -
                                             //the last promise in the queue has been resolved
-                                            if ((state === WAITING) && ((idx + 1 === deferredAppends.length))) {
+                                            if (!self.requestScheduler.isScheduled(self) && ((idx + 1 === deferredAppends.length))) {
                                                 doStart.call(self);
                                             }
 
@@ -344,7 +344,6 @@ MediaPlayer.dependencies.BufferController = function () {
                                                 rejectedBytes = data;
                                                 deferredRejectedDataAppend = deferred;
                                                 isQuotaExceeded = true;
-                                                rejectTime = self.videoModel.getCurrentTime();
                                                 fragmentsToLoad = 0;
                                                 // stop scheduling new requests
                                                 doStop.call(self);
@@ -1010,16 +1009,19 @@ MediaPlayer.dependencies.BufferController = function () {
         },
 
         updateBufferState: function() {
-            var self = this,
-                currentTime = self.videoModel.getCurrentTime();
+            var self = this;
 
             // if the buffer controller is stopped and the buffer is full we should try to clear the buffer
             // before that we should make sure that we will have enough space to append the data, so we wait
             // until the video time moves forward for a value greater than rejected data duration since the last reject event or since the last seek.
-            if (isQuotaExceeded && rejectedBytes && (Math.abs(currentTime - (seeking ? seekTarget : rejectTime)) > fragmentDuration)) {
+            if (isQuotaExceeded && rejectedBytes && !appendingRejectedData) {
+                appendingRejectedData = true;
                 //try to append the data that was previosly rejected
-                rejectTime = self.videoModel.getCurrentTime();
-                appendToBuffer.call(self, rejectedBytes);
+                appendToBuffer.call(self, rejectedBytes, lastQuality).then(
+                    function(){
+                        appendingRejectedData = false;
+                    }
+                );
             } else {
                 updateBufferLevel.call(self);
             }
