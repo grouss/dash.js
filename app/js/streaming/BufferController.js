@@ -283,7 +283,7 @@ MediaPlayer.dependencies.BufferController = function () {
             Q.when((isAppendingRejectedData) || ln < 2 || deferredAppends[ln - 2].promise).then(
                 function() {
                     if (!buffer) return;
-                    clearBuffer.call(self).then(
+                    hasEnoughSpaceToAppend.call(self).then(
                         function() {
                             if (quality !== lastQuality) {
                                 deferred.resolve();
@@ -303,9 +303,7 @@ MediaPlayer.dependencies.BufferController = function () {
                                                 rejectedBytes = null;
                                             }
 
-                                            // we should resume request scheduling after all peinding segments are appended -
-                                            //the last promise in the queue has been resolved
-                                            if (!self.requestScheduler.isScheduled(self) && ((idx + 1 === deferredAppends.length))) {
+                                            if (!self.requestScheduler.isScheduled(self)) {
                                                 doStart.call(self);
                                             }
 
@@ -395,6 +393,33 @@ MediaPlayer.dependencies.BufferController = function () {
             }
         },
 
+        hasEnoughSpaceToAppend = function() {
+            var self = this,
+                deferred = Q.defer(),
+                startClearing;
+
+            // do not remove any data until the quota is exceeded
+            if (!isQuotaExceeded) {
+                return Q.when(true);
+            }
+
+            startClearing = function() {
+                clearBuffer.call(self).then(
+                    function(removedTime) {
+                        if (removedTime >= fragmentDuration) {
+                            deferred.resolve();
+                        } else {
+                            setTimeout(startClearing, fragmentDuration * 1000);
+                        }
+                    }
+                );
+            };
+
+            startClearing.call(self);
+
+            return deferred.promise;
+        },
+
         clearBuffer = function() {
             var self = this,
                 deferred = Q.defer(),
@@ -402,11 +427,6 @@ MediaPlayer.dependencies.BufferController = function () {
                 removeStart = 0,
                 removeEnd,
                 req;
-
-            // do not remove any data until the quota is exceeded
-            if (!isQuotaExceeded) {
-                return Q.when(true);
-            }
 
             // we need to remove data that is more than one segment before the video currentTime
             req = self.fragmentController.getExecutedRequestForTime(fragmentModel, currentTime);
@@ -418,13 +438,13 @@ MediaPlayer.dependencies.BufferController = function () {
                     if ((range === null) && (seekTarget === currentTime) && (buffer.buffered.length > 0)) {
                         removeEnd = buffer.buffered.end(buffer.buffered.length -1 );
                     }
-
+                    removeStart = buffer.buffered.start(0);                    
                     self.sourceBufferExt.remove(buffer, removeStart, removeEnd, duration, mediaSource).then(
                         function() {
                             // after the data has been removed from the buffer we should remove the requests from the list of
                             // the executed requests for which playback time is inside the time interval that has been removed from the buffer
                             self.fragmentController.removeExecutedRequestsBeforeTime(fragmentModel, removeEnd);
-                            deferred.resolve();
+                            deferred.resolve(removeEnd - removeStart);
                         }
                     );
                 }
