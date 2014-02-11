@@ -229,11 +229,6 @@ MediaPlayer.dependencies.BufferController = function () {
 				function (data) {
 					if (data !== null && deferredInitAppend !== null) {
 
-                        if (request.quality !== lastQuality) {
-                            self.fragmentController.removeExecutedRequest(fragmentModel, request);
-                            return;
-                        }
-
                         Q.when(deferredInitAppend.promise).then(
                             function() {
                                 appendToBuffer.call(self, data, request.quality).then(
