@@ -263,7 +263,6 @@ MediaPlayer.dependencies.BufferController = function () {
                 // if we append the rejected data we should use the stored promise instead of creating a new one
                 deferred = isAppendingRejectedData ? deferredRejectedDataAppend : Q.defer(),
                 ln = isAppendingRejectedData ? deferredAppends.length : deferredAppends.push(deferred),
-                idx = deferredAppends.indexOf(deferred),
                 representation = getRepresentationForQuality(lastQuality, self.getData()),
                 currentVideoTime = self.videoModel.getCurrentTime(),
                 currentTime = new Date();
@@ -433,7 +432,7 @@ MediaPlayer.dependencies.BufferController = function () {
                     if ((range === null) && (seekTarget === currentTime) && (buffer.buffered.length > 0)) {
                         removeEnd = buffer.buffered.end(buffer.buffered.length -1 );
                     }
-                    removeStart = buffer.buffered.start(0);                    
+                    removeStart = buffer.buffered.start(0);
                     self.sourceBufferExt.remove(buffer, removeStart, removeEnd, duration, mediaSource).then(
                         function() {
                             // after the data has been removed from the buffer we should remove the requests from the list of
