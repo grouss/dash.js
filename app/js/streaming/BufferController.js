@@ -390,6 +390,7 @@ MediaPlayer.dependencies.BufferController = function () {
         hasEnoughSpaceToAppend = function() {
             var self = this,
                 deferred = Q.defer(),
+                removedTime = 0,
                 startClearing;
 
             // do not remove any data until the quota is exceeded
@@ -399,7 +400,8 @@ MediaPlayer.dependencies.BufferController = function () {
 
             startClearing = function() {
                 clearBuffer.call(self).then(
-                    function(removedTime) {
+                    function(removedTimeValue) {
+                        removedTime += removedTimeValue;
                         if (removedTime >= fragmentDuration) {
                             deferred.resolve();
                         } else {
