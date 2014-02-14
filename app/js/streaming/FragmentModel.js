@@ -54,6 +54,22 @@ MediaPlayer.dependencies.FragmentModel = function () {
 
         },
 
+        hasRequest = function (arr, req) {
+            var lastIdx = arr.length - 1,
+                r,
+                i;
+
+            for (i = lastIdx; i >=0; i -=1) {
+                r = arr[i];
+
+                if ((r.url === req.url) && (r.startTime === req.startTime)) {
+                    return true;
+                }
+            }
+
+            return false;
+        },
+
         removeExecutedRequest = function(request) {
             var idx = executedRequests.indexOf(request);
 
@@ -92,11 +108,11 @@ MediaPlayer.dependencies.FragmentModel = function () {
         isFragmentLoadedOrPending: function(request) {
             var self = this,
                 isLoaded = false,
-                ln = executedRequests.length,
+                lastIdx = executedRequests.length - 1,
                 req;
 
             // First, check if the fragment has already been loaded
-            for (var i = 0; i < ln; i++) {
+            for (var i = lastIdx; i >= 0; i -= 1) {
                 req = executedRequests[i];
                 if (request.startTime === req.startTime || ((req.action === "complete") && request.action === req.action)) {
                     self.debug.log(request.streamType + " Fragment already loaded for time: " + request.startTime);
@@ -113,21 +129,7 @@ MediaPlayer.dependencies.FragmentModel = function () {
 
             // if it has not been loaded check if it is going to be loaded
             if (!isLoaded) {
-                for (i = 0, ln = pendingRequests.length; i < ln; i += 1) {
-                    req = pendingRequests[i];
-                    if ((request.url === req.url) && (request.startTime === req.startTime)) {
-                        isLoaded = true;
-                    }
-                }
-            }
-
-            if (!isLoaded) {
-                for (i = 0, ln = loadingRequests.length; i < ln; i += 1) {
-                    req = loadingRequests[i];
-                    if ((request.url === req.url) && (request.startTime === req.startTime)) {
-                        isLoaded = true;
-                    }
-                }
+                isLoaded = hasRequest.call(self, pendingRequests, request) || hasRequest.call(self, loadingRequests, request);
             }
 
             return isLoaded;

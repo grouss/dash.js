@@ -174,7 +174,7 @@ MediaPlayer.dependencies.FragmentController = function () {
         prepareFragmentForLoading: function(bufferController, request, startLoadingCallback, successLoadingCallback, errorLoadingCallback, streamEndCallback) {
             var fragmentModel = findModel(bufferController);
 
-            if (!fragmentModel || !request) {
+            if (!fragmentModel || !request || this.isFragmentLoadedOrPending(bufferController, request)) {
                 return Q.when(null);
             }
             // Store the request and all the necessary callbacks in the model for deferred execution
