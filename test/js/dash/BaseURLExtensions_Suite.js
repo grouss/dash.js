@@ -1,6 +1,6 @@
 // The copyright in this software is being made available under the BSD License, included below. This software may be subject to other third party and contributor rights, including patent rights, and no such rights are granted under this license.
 //
-// Copyright (c) 2013, Microsoft Open Technologies, Inc. 
+// Copyright (c) 2013, Microsoft Open Technologies, Inc.
 //
 // All rights reserved.
 // Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
@@ -10,89 +10,91 @@
 //
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
- 
- describe("Base url Extensions Test Suite", function(){
-    var baseUrl, system, baseURLExt;
-    
-    beforeEach(function(){
-      
-        
-        // Set up DI.
-        system = new dijon.System();
-        system.mapValue("system", system);
-        system.mapOutlet("system");
 
-        context = new Dash.di.DashContext();
-        system.injectInto(context);
+describe("Base url Extensions Test Suite", function () {
+	var baseUrl,
+	system,
+	baseURLExt;
 
-        baseURLExt = system.getObject("baseURLExt");
-        
-    });
-     if(window.location.href.indexOf("runner.html")>0)
-        {
-            describe("Base url Extension Negative Test Suite", function(){
-            it("loadSegments", function(){
-                   var promise = null,
-                          success,
-                          successResult,
-                          failure;
-         
-                        flag=false; 
-                        success = function(result) {
-                           successResult = result;
-                           flag = true;
-                            expect(flag).toEqual(true);
-                          },
-                          failure = function(error) {
-                            flag = false;
-                            expect(flag).toEqual(false);
-                          };
-                         runs(function(){
-                          promise =   baseURLExt.loadSegments (testUrl,null); 
-                          promise.then(success, failure);
-                         });
-                         
-                });
-                it("loadSegments with input", function(){
-                   var promise = null,
-                          success,
-                          successResult,
-                          failure;
-         
-                        flag=false; 
-                        success = function(result) {
-                           successResult = result;
-                           flag = true;
-                            expect(flag).toEqual(true);
-                          },
-                          failure = function(error) {
-                            flag = false;
-                            expect(flag).toEqual(false);
-                          };
-                         runs(function(){
-                          promise =   baseURLExt.loadSegments (testUrl,"5-7"); 
-                          promise.then(success, failure);
-                         });
+	beforeEach(function () {
 
-                });
-                
-                it("findSIDX", function(){
-					debugger;
-                   var buffer = new ArrayBuffer(0);
-                   var infor=[];
-                   var obj={};
-                   obj.start=10;
-                   obj.start=20;
-                   infor.range=obj;
-                   
-                   infor.bytesLoaded=20;
-                   
-                   expect(function() {baseURLExt.findSIDX (buffer,infor)}).not.toThrow();
-                });
-            });
-        }
-        it("Creating and assigning segment ", function(){
-           var objSegment  = new Dash.vo.Segment();
-           expect(objSegment.index).toBeNull();
-        });
- });
+		// Set up DI.
+		system = new dijon.System();
+		system.mapValue("system", system);
+		system.mapOutlet("system");
+
+		context = new Dash.di.DashContext();
+		system.injectInto(context);
+
+		baseURLExt = system.getObject("baseURLExt");
+
+	});
+	if (window.location.href.indexOf("runner.html") > 0) {
+		describe("Base url Extension Negative Test Suite", function () {
+			it("loadSegments", function () {
+				var promise = null,
+				success,
+				successResult,
+				failure;
+
+				flag = false;
+				success = function (result) {
+					successResult = result;
+					flag = true;
+					expect(flag).toEqual(true);
+				},
+				failure = function (error) {
+					flag = false;
+					expect(flag).toEqual(false);
+				};
+				runs(function () {
+					promise = baseURLExt.loadSegments(testUrl, null);
+					promise.then(success, failure);
+				});
+
+			});
+			it("loadSegments with input", function () {
+				var promise = null,
+				success,
+				successResult,
+				failure;
+
+				flag = false;
+				success = function (result) {
+					successResult = result;
+					flag = true;
+					expect(flag).toEqual(true);
+				},
+				failure = function (error) {
+					flag = false;
+					expect(flag).toEqual(false);
+				};
+				runs(function () {
+					promise = baseURLExt.loadSegments(testUrl, "5-7");
+					promise.then(success, failure);
+				});
+
+			});
+
+			it("findSIDX", function () {
+
+				var buffer = new ArrayBuffer(0);
+				var infor = [];
+				var obj = {};
+				obj.start = 10;
+				obj.start = 20;
+				infor.range = obj;
+
+				infor.bytesLoaded = 20;
+
+				expect(function () {
+					baseURLExt.findSIDX(buffer, infor)
+				}).not.toThrow();
+			});
+		});
+	}
+	it("Creating and assigning segment ", function () {
+		var objSegment = new Dash.vo.Segment();
+		expect(objSegment.index).toBeNull();
+	});
+});

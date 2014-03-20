@@ -112,8 +112,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 		adaptationSet.maxHeight = "720";
 		adaptationSet.maxFrameRate = "25";
 		adaptationSet.par = "16:9";
-		period.AdaptationSet_asArray.push(adaptationSet);
-		{
+		period.AdaptationSet_asArray.push(adaptationSet);{
 			representation = {};
 			representation.name = "Representation";
 			representation.isRoot = false;
@@ -130,8 +129,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 			representation.bandwidth = "275000";
 			representation.codecs = "video/mp4";
 			adaptationSet.Representation_asArray.push(representation);
-		}
-		{
+		}{
 			representation = {};
 			representation.name = "Representation";
 			representation.isRoot = false;
@@ -148,8 +146,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 			representation.bandwidth = "475000";
 			representation.codecs = "video/mp4";
 			adaptationSet.Representation_asArray.push(representation);
-		}
-		{
+		}{
 			representation = {};
 			representation.name = "Representation";
 			representation.isRoot = false;

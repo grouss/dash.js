@@ -11,8 +11,8 @@
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 /**
-* Test suite for DashManifestExtensions.js
-*/
+ * Test suite for DashManifestExtensions.js
+ */
 
 for (var MPDstring in strMpd) {
 	(function (MPDstring) {
@@ -33,11 +33,11 @@ for (var MPDstring in strMpd) {
 			manifestObj,
 			docMpdProto,
 			period = 0,
-            tempManifest;
+			tempManifest;
 
 			beforeEach(function () {
-                 
-                 baseUrl = "http://dashdemo.edgesuite.net/envivio/dashpr/clear/";
+
+				baseUrl = "http://dashdemo.edgesuite.net/envivio/dashpr/clear/";
 				// Set up DI.
 				system = new dijon.System();
 				system.mapValue("system", system);
@@ -168,12 +168,9 @@ for (var MPDstring in strMpd) {
 				];
 			});
 
-
-			
-
 			it("getIsMain with manifestObj null", function () {
 				var resBool = '';
-                manifestObj=null;
+				manifestObj = null;
 				manExtn.getIsMain(manifestObj).then(function (Data) {
 					resBool = Data;
 				}, function (Error) {
@@ -201,243 +198,37 @@ for (var MPDstring in strMpd) {
 						expect(resBool).not.toBeNull();
 					}
 				});
-			}); 
+			});
 
-			/** This method is commented as getLiveEdge method is removed in DashManifestExtension.js 
-           it("getLiveEdge with parameter availabilityEndTime", function () {
-                res = '';
-                var lessDate = new Date();
-                lessDate.setDate(lessDate.getDate()-5);
-                manifestObj.availabilityEndTime=new Date();
-                manifestObj.availabilityStartTime=lessDate;
-                manifestObj.Period_asArray=[];
-                manifestObj.Period_asArray.push(manifestObj.Period);
+			/** This method is commented as getLiveEdge method is removed in DashManifestExtension.js
+			it("getLiveEdge with parameter availabilityEndTime", function () {
+			res = '';
+			var lessDate = new Date();
+			lessDate.setDate(lessDate.getDate()-5);
+			manifestObj.availabilityEndTime=new Date();
+			manifestObj.availabilityStartTime=lessDate;
+			manifestObj.Period_asArray=[];
+			manifestObj.Period_asArray.push(manifestObj.Period);
 
-                manExtn.getLiveEdge(manifestObj).then(function (Data) {
-					res = Data;
-				}, function (Error) {
-					res = Error;
-				});
+			manExtn.getLiveEdge(manifestObj).then(function (Data) {
+			res = Data;
+			}, function (Error) {
+			res = Error;
+			});
 
-				waitsFor(function () {
-					if (res == 0)
-						return true;
-				}, "data is null", 100);
-				runs(function () {
-						expect(res).toBe("");
-				});
+			waitsFor(function () {
+			if (res == 0)
+			return true;
+			}, "data is null", 100);
+			runs(function () {
+			expect(res).toBe("");
+			});
 			});    **/
 
-            it("getDataForId with id null", function () {
+			it("getDataForId with id null", function () {
 				var res = '';
 				var id = null;
-				manExtn.getDataForId(id, manifestObj,period).then(function (Data) {
-					res = Data ? Data.id : null;
-				}, function (Error) {
-					res = Error;
-				});
-				waitsFor(function () {
-					if (res != '')
-						return true;
-				}, "data is null", 1000);
-				runs(function () {
-						expect(res).toBeNull();
-				});
-			});    
-
-           
-             it("GetRepresentationCount for Audio with an empty array", function () {
-				var res = '';
-                adaptationSetAudio.Representation_asArray={};
-				manExtn.getRepresentationCount(adaptationSetAudio).then(function (Data) {
-					res = Data;
-				}, function (Error) {
-					res = Error;
-				});
-				waitsFor(function () {
-					if (res != '')
-						return true;
-				}, "data is null", 100);
-				runs(function () {
-						expect(res).toBe(undefined);
-
-				});
-			});
-
-            it("getVideoData  with empty data", function () {
-				var data = '';
-                manifestObj.Period_asArray[0].AdaptationSet_asArray={};
-				manExtn.getVideoData(manifestObj,period).then(function (Data) {
-					expect(Data).toBe(null);
-				}, function (Error) {
-					data = Error;
-				});
-
-			});    
-
-            it("getAudioData with empty data", function () {
-				var data = [];
-                manifestObj.Period_asArray[0].AdaptationSet_asArray={};
-				manExtn.getAudioDatas(manifestObj,period).then(function (Data) {
-						expect(Data).toBe(Data);
-				}, function (Error) {
-					data = Error;
-				});
-			});   
-
-            it("getPrimaryAudioData with empty data", function () {
-				var data = '';
-                manifestObj.Period_asArray[0].AdaptationSet_asArray={};
-				manExtn.getPrimaryAudioData(manifestObj,period).then(function (Data) {
-					expect(Data).toBe(null);
-				}, function (Error) {
-					data = Error;
-				});
-
-			});    
-            
-            it("getCodec - Video with empty data", function () {
-				var data = '';
-                adaptationSetVideo.Representation_asArray[0]="";
-				manExtn.getCodec(adaptationSetVideo).then(function (Data) {
-					expect(Data).toEqual("undefined;codecs=\"undefined\"");
-				}, function (Error) {
-					data = Error;
-				});
-
-			});  
-
-			/** Commented as getLiveOffset method is removed in DashManifestExtension.js
-            it("getLiveOffset with empty data", function () {
-				var data = '';
-                manifestObj.suggestedPresentationDelay="";
-				manExtn.getLiveOffset(manifestObj).then(function (Data) {
-					expect(Data).toEqual("");
-				}, function (Error) {
-					data = null;
-				});
-			});    **/   
-
-             it("getIsOnDemand with empty profiles", function () {
-				var boolRes = '';
-                manifestObj.profiles={};
-				manExtn.getIsOnDemand(manifestObj).then(function (Data) {
-					expect(Data).toEqual(false);
-				}, function (Error) {
-					boolRes = Error;
-				});
-			});  
-
-            it("getDuration with islive true", function () {
-				var res = '';
-				manExtn.getDuration(manifestObj, true).then(function (Data) {
-					expect(Data).toEqual(Infinity);
-				}, function (Error) {
-					res = Error;
-				});
-			});   
-
-            it("getDuration with mediaPresentationDuration", function () {
-				var res = '';
-                manifestObj.mediaPresentationDuration="8";
-				manExtn.getDuration(manifestObj, false).then(function (Data) {
-					expect(Data).toEqual("8");
-				}, function (Error) {
-					res = Error;
-				});
-			});    
-            it("getDuration with mediaPresentationDuration null", function () {
-				var res = '';
-                manifestObj.mediaPresentationDuration=null;
-                manifestObj.availabilityEndTime=new Date();
-                manifestObj.availabilityStartTime=new Date();
-				manExtn.getDuration(manifestObj, false).then(function (Data) {
-					expect(Data).toEqual(0);
-				}, function (Error) {
-					res = Error;
-				});
-			});   
-            it("getDuration with all parameters are null", function () {
-				var res = '';
-                manifestObj.mediaPresentationDuration=null;
-                manifestObj.availabilityEndTime=null;
-                manifestObj.availabilityStartTime=null;
-				manExtn.getDuration(manifestObj, false).then(function (Data) {
-					expect(isNaN(Data)).toEqual(true);
-				}, function (Error) {
-					res = Error;
-				});
-			});
-            
-            it("getBandwidth with bandwidth as null", function () {
-				var res = '';
-                var RepObj = manifestObj.Period.AdaptationSet[0].Representation[0] ? manifestObj.Period.AdaptationSet[0].Representation[0] : manifestObj.Period.AdaptationSet[0].Representation;
-				RepObj.bandwidth = null;
-				manExtn.getBandwidth(RepObj).then(function (Data) {
-					expect(Data).toEqual(null);
-				}, function (Error) {
-					res = Error;
-				});
-			});
-            
-            it("getRefreshDelay with minimumUpdatePeriod as null", function () {
-				var res = '';
-                manifestObj.minimumUpdatePeriod=null;
-				manExtn.getRefreshDelay(manifestObj).then(function (Data) {
-					expect(isNaN(Data)).toEqual(true);
-				}, function (Error) {
-					res = Error;
-				});
-			});
-            
-            
-                  
-         
-        if(window.location.href.indexOf("runner.html")==0)
-        {
-           describe("ManifestExtensions for browsers only", function () {
-               it("getRepresentationFor with manifestObj.Period.AdaptationSet[index] as null", function () {
-                    var index = 0;
-                    manifestObj.Period.AdaptationSet[index]=null;
-                    var res = '';
-                    manExtn.getRepresentationFor(index, manifestObj.Period.AdaptationSet[index]).then(function (Data) {
-                        res = Data;
-                    }, function (Error) {
-                        res = Error;
-                    });
-			   });     
-            
-                it("getIsAudio with input null", function () {
-                    var resBool = '';
-                    adaptationSetAudio=null;
-                    manExtn.getIsAudio(adaptationSetAudio).then(function (Data) {
-                        resBool = Data;
-                    }, function (Error) {
-                        resBool = Error;
-                    });
-                    waitsFor(function () {
-                        if (resBool.toString() != '')
-                            return true;
-                    }, "data is null", 100);
-                    runs(function () {
-                        expect(resBool).toBeTruthy();
-                    });
-                });
-                
-                it("processAdaptation with manifestObj.Period.AdaptationSet[0] as null", function () {
-                    var resBool = true,
-                    tempObj;
-                    var ResObj = manExtn.processAdaptation(null);
-                    expect(ResObj.Representation_asArray).toBeNull();
-			    });  
-
-               
-               
-               it("getDataForId with manifestObj as null", function () {
-				var res = '';
-                var id = null;
-				manifestObj.Period_asArray[0].AdaptationSet_asArray = null;
-				manExtn.getDataForId(id, manifestObj).then(function (Data) {
+				manExtn.getDataForId(id, manifestObj, period).then(function (Data) {
 					res = Data ? Data.id : null;
 				}, function (Error) {
 					res = Error;
@@ -451,45 +242,10 @@ for (var MPDstring in strMpd) {
 				});
 			});
 
-            it("getDataForIndex with index null", function () {
-				var index = null,
-				res = '';
-				manExtn.getDataForIndex(index, manifestObj).then(function (Data) {
-					res = Data;
-				}, function (Error) {
-					res = Error;
-				});
-				waitsFor(function () {
-					if (res != '')
-						return true;
-				}, "data is null", 1000);
-				runs(function () {
-					expect(res).toBe(undefined);
-
-				});
-			 }); 
-
-            it("getDataForIndex with manifest null", function () {
-				var index = 0;
-				manifest.Period_asArray[0].AdaptationSet_asArray = null;
-				manExtn.getDataForIndex(index, manifestObj).then(function (Data) {
-					res = Data;
-				}, function (Error) {
-					res = Error;
-				});
-				waitsFor(function () {
-					if (res != '')
-						return true;
-				}, "data is null", 1000);
-				runs(function () {
-					expect(res).toBe(undefined);
-
-				});
-			});
-
-            it("GetRepresentationCount for Audio with null", function () {
+			it("GetRepresentationCount for Audio with an empty array", function () {
 				var res = '';
-				manExtn.getRepresentationCount(null).then(function (Data) {
+				adaptationSetAudio.Representation_asArray = {};
+				manExtn.getRepresentationCount(adaptationSetAudio).then(function (Data) {
 					res = Data;
 				}, function (Error) {
 					res = Error;
@@ -499,34 +255,266 @@ for (var MPDstring in strMpd) {
 						return true;
 				}, "data is null", 100);
 				runs(function () {
-						expect(res).toBe(undefined);
+					expect(res).toBe(undefined);
 
 				});
-			}); 
-            
-            it("processAdaptation with manifestObj.Period.AdaptationSet[0].Representation_asArray as null", function () {
-                    var resBool = true,
-                    tempObj;
-                    manifestObj.Period.AdaptationSet[0].Representation_asArray =null;
-                    var ResObj = manExtn.processAdaptation(manifestObj.Period.AdaptationSet[0]);
-                    expect(ResObj.Representation_asArray).toBeNull();
-			 }); 
-             
-            it("getRepresentationFor with index null", function () {
-				var index = null;
+			});
+
+			it("getVideoData  with empty data", function () {
+				var data = '';
+				manifestObj.Period_asArray[0].AdaptationSet_asArray = {};
+				manExtn.getVideoData(manifestObj, period).then(function (Data) {
+					expect(Data).toBe(null);
+				}, function (Error) {
+					data = Error;
+				});
+
+			});
+
+			it("getAudioData with empty data", function () {
+				var data = [];
+				manifestObj.Period_asArray[0].AdaptationSet_asArray = {};
+				manExtn.getAudioDatas(manifestObj, period).then(function (Data) {
+					expect(Data).toBe(Data);
+				}, function (Error) {
+					data = Error;
+				});
+			});
+
+			it("getPrimaryAudioData with empty data", function () {
+				var data = '';
+				manifestObj.Period_asArray[0].AdaptationSet_asArray = {};
+				manExtn.getPrimaryAudioData(manifestObj, period).then(function (Data) {
+					expect(Data).toBe(null);
+				}, function (Error) {
+					data = Error;
+				});
+
+			});
+
+			it("getCodec - Video with empty data", function () {
+				var data = '';
+				adaptationSetVideo.Representation_asArray[0] = "";
+				manExtn.getCodec(adaptationSetVideo).then(function (Data) {
+					expect(Data).toEqual("undefined;codecs=\"undefined\"");
+				}, function (Error) {
+					data = Error;
+				});
+
+			});
+
+			/** Commented as getLiveOffset method is removed in DashManifestExtension.js
+			it("getLiveOffset with empty data", function () {
+			var data = '';
+			manifestObj.suggestedPresentationDelay="";
+			manExtn.getLiveOffset(manifestObj).then(function (Data) {
+			expect(Data).toEqual("");
+			}, function (Error) {
+			data = null;
+			});
+			});    **/
+
+			it("getIsOnDemand with empty profiles", function () {
+				var boolRes = '';
+				manifestObj.profiles = {};
+				manExtn.getIsOnDemand(manifestObj).then(function (Data) {
+					expect(Data).toEqual(false);
+				}, function (Error) {
+					boolRes = Error;
+				});
+			});
+
+			it("getDuration with islive true", function () {
 				var res = '';
-				manExtn.getRepresentationFor(index, manifestObj.Period.AdaptationSet[index]).then(function (Data) {
-					expect(res.id).not.toEqual(null);
+				manExtn.getDuration(manifestObj, true).then(function (Data) {
+					expect(Data).toEqual(Infinity);
 				}, function (Error) {
 					res = Error;
 				});
 			});
-            
-            
-          });
-        }
-    });
-})(MPDstring);
-    break;
-}
 
+			it("getDuration with mediaPresentationDuration", function () {
+				var res = '';
+				manifestObj.mediaPresentationDuration = "8";
+				manExtn.getDuration(manifestObj, false).then(function (Data) {
+					expect(Data).toEqual("8");
+				}, function (Error) {
+					res = Error;
+				});
+			});
+			it("getDuration with mediaPresentationDuration null", function () {
+				var res = '';
+				manifestObj.mediaPresentationDuration = null;
+				manifestObj.availabilityEndTime = new Date();
+				manifestObj.availabilityStartTime = new Date();
+				manExtn.getDuration(manifestObj, false).then(function (Data) {
+					expect(Data).toEqual(0);
+				}, function (Error) {
+					res = Error;
+				});
+			});
+			it("getDuration with all parameters are null", function () {
+				var res = '';
+				manifestObj.mediaPresentationDuration = null;
+				manifestObj.availabilityEndTime = null;
+				manifestObj.availabilityStartTime = null;
+				manExtn.getDuration(manifestObj, false).then(function (Data) {
+					expect(isNaN(Data)).toEqual(true);
+				}, function (Error) {
+					res = Error;
+				});
+			});
+
+			it("getBandwidth with bandwidth as null", function () {
+				var res = '';
+				var RepObj = manifestObj.Period.AdaptationSet[0].Representation[0] ? manifestObj.Period.AdaptationSet[0].Representation[0] : manifestObj.Period.AdaptationSet[0].Representation;
+				RepObj.bandwidth = null;
+				manExtn.getBandwidth(RepObj).then(function (Data) {
+					expect(Data).toEqual(null);
+				}, function (Error) {
+					res = Error;
+				});
+			});
+
+			it("getRefreshDelay with minimumUpdatePeriod as null", function () {
+				var res = '';
+				manifestObj.minimumUpdatePeriod = null;
+				manExtn.getRefreshDelay(manifestObj).then(function (Data) {
+					expect(isNaN(Data)).toEqual(true);
+				}, function (Error) {
+					res = Error;
+				});
+			});
+
+			if (window.location.href.indexOf("runner.html") == 0) {
+				describe("ManifestExtensions for browsers only", function () {
+					it("getRepresentationFor with manifestObj.Period.AdaptationSet[index] as null", function () {
+						var index = 0;
+						manifestObj.Period.AdaptationSet[index] = null;
+						var res = '';
+						manExtn.getRepresentationFor(index, manifestObj.Period.AdaptationSet[index]).then(function (Data) {
+							res = Data;
+						}, function (Error) {
+							res = Error;
+						});
+					});
+
+					it("getIsAudio with input null", function () {
+						var resBool = '';
+						adaptationSetAudio = null;
+						manExtn.getIsAudio(adaptationSetAudio).then(function (Data) {
+							resBool = Data;
+						}, function (Error) {
+							resBool = Error;
+						});
+						waitsFor(function () {
+							if (resBool.toString() != '')
+								return true;
+						}, "data is null", 100);
+						runs(function () {
+							expect(resBool).toBeTruthy();
+						});
+					});
+
+					it("processAdaptation with manifestObj.Period.AdaptationSet[0] as null", function () {
+						var resBool = true,
+						tempObj;
+						var ResObj = manExtn.processAdaptation(null);
+						expect(ResObj.Representation_asArray).toBeNull();
+					});
+
+					it("getDataForId with manifestObj as null", function () {
+						var res = '';
+						var id = null;
+						manifestObj.Period_asArray[0].AdaptationSet_asArray = null;
+						manExtn.getDataForId(id, manifestObj).then(function (Data) {
+							res = Data ? Data.id : null;
+						}, function (Error) {
+							res = Error;
+						});
+						waitsFor(function () {
+							if (res != '')
+								return true;
+						}, "data is null", 1000);
+						runs(function () {
+							expect(res).toBeNull();
+						});
+					});
+
+					it("getDataForIndex with index null", function () {
+						var index = null,
+						res = '';
+						manExtn.getDataForIndex(index, manifestObj).then(function (Data) {
+							res = Data;
+						}, function (Error) {
+							res = Error;
+						});
+						waitsFor(function () {
+							if (res != '')
+								return true;
+						}, "data is null", 1000);
+						runs(function () {
+							expect(res).toBe(undefined);
+
+						});
+					});
+
+					it("getDataForIndex with manifest null", function () {
+						var index = 0;
+						manifest.Period_asArray[0].AdaptationSet_asArray = null;
+						manExtn.getDataForIndex(index, manifestObj).then(function (Data) {
+							res = Data;
+						}, function (Error) {
+							res = Error;
+						});
+						waitsFor(function () {
+							if (res != '')
+								return true;
+						}, "data is null", 1000);
+						runs(function () {
+							expect(res).toBe(undefined);
+
+						});
+					});
+
+					it("GetRepresentationCount for Audio with null", function () {
+						var res = '';
+						manExtn.getRepresentationCount(null).then(function (Data) {
+							res = Data;
+						}, function (Error) {
+							res = Error;
+						});
+						waitsFor(function () {
+							if (res != '')
+								return true;
+						}, "data is null", 100);
+						runs(function () {
+							expect(res).toBe(undefined);
+
+						});
+					});
+
+					it("processAdaptation with manifestObj.Period.AdaptationSet[0].Representation_asArray as null", function () {
+						var resBool = true,
+						tempObj;
+						manifestObj.Period.AdaptationSet[0].Representation_asArray = null;
+						var ResObj = manExtn.processAdaptation(manifestObj.Period.AdaptationSet[0]);
+						expect(ResObj.Representation_asArray).toBeNull();
+					});
+
+					it("getRepresentationFor with index null", function () {
+						var index = null;
+						var res = '';
+						manExtn.getRepresentationFor(index, manifestObj.Period.AdaptationSet[index]).then(function (Data) {
+							expect(res.id).not.toEqual(null);
+						}, function (Error) {
+							res = Error;
+						});
+					});
+
+				});
+			}
+		});
+	})(MPDstring);
+	break;
+}

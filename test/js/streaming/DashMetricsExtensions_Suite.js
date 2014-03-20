@@ -17,7 +17,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 	metrics = {};
 
 	beforeEach(function () {
-	
+
 		// Set up DI.
 		system = new dijon.System();
 		system.mapValue("system", system);
@@ -111,8 +111,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 		adaptationSet.maxHeight = "720";
 		adaptationSet.maxFrameRate = "25";
 		adaptationSet.par = "16:9";
-		period.AdaptationSet_asArray.push(adaptationSet);
-		{
+		period.AdaptationSet_asArray.push(adaptationSet);{
 			representation = {};
 			representation.name = "Representation";
 			representation.isRoot = false;
@@ -129,8 +128,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 			representation.bandwidth = "275000";
 			representation.codecs = "video/mp4";
 			adaptationSet.Representation_asArray.push(representation);
-		}
-		{
+		}{
 			representation = {};
 			representation.name = "Representation";
 			representation.isRoot = false;
@@ -147,8 +145,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 			representation.bandwidth = "475000";
 			representation.codecs = "video/mp4";
 			adaptationSet.Representation_asArray.push(representation);
-		}
-		{
+		}{
 			representation = {};
 			representation.name = "Representation";
 			representation.isRoot = false;
@@ -218,7 +215,7 @@ describe("DashMetricsExtensions Test Suite", function () {
 		subobjHttpList.type = "Media Segment";
 		subobjHttpList.url = "";
 
-			objHttpList.push(subobjHttpList);
+		objHttpList.push(subobjHttpList);
 
 		metrics.HttpList = objHttpList;
 
@@ -273,9 +270,9 @@ describe("DashMetricsExtensions Test Suite", function () {
 		expect(vo.to).toBe("audio");
 	});
 
-     it("getCurrentRepresentationSwitch function with null", function () {
+	it("getCurrentRepresentationSwitch function with null", function () {
 		var vo = new MediaPlayer.vo.metrics.RepresentationSwitch();
-        metrics.RepSwitchList=null;
+		metrics.RepSwitchList = null;
 		vo = metricExtn.getCurrentRepresentationSwitch(metrics);
 		expect(vo).toBe(null);
 	});
@@ -285,11 +282,10 @@ describe("DashMetricsExtensions Test Suite", function () {
 		vo = metricExtn.getCurrentBufferLevel(metrics);
 		expect(vo.level).toEqual(0);
 	});
-    
-   
-    it("getCurrentBufferLevel returns correct bandwidth", function () {
+
+	it("getCurrentBufferLevel returns correct bandwidth", function () {
 		var vo = new MediaPlayer.vo.metrics.BufferLevel();
-        metrics.BufferLevel =null;
+		metrics.BufferLevel = null;
 		vo = metricExtn.getCurrentBufferLevel(metrics);
 		expect(vo).toBe(null);
 	});
@@ -298,10 +294,10 @@ describe("DashMetricsExtensions Test Suite", function () {
 		vo = metricExtn.getCurrentHttpRequest(metrics);
 		expect(vo.responsecode).toBe(200);
 	});
-  
-    it("getCurrentHttpRequest function", function () {
+
+	it("getCurrentHttpRequest function", function () {
 		var vo = new MediaPlayer.vo.metrics.PlayList();
-        metrics.HttpList =null;
+		metrics.HttpList = null;
 		vo = metricExtn.getCurrentHttpRequest(metrics);
 		expect(vo).toBe(null);
 	});
@@ -309,8 +305,8 @@ describe("DashMetricsExtensions Test Suite", function () {
 		expect(metricExtn.getCurrentDroppedFrames(metrics)).toBeNull();
 	});
 
-    it("getCurrentDroppedFrames with data", function () {
-        metrics.DroppedFrames=5;
+	it("getCurrentDroppedFrames with data", function () {
+		metrics.DroppedFrames = 5;
 		expect(metricExtn.getCurrentDroppedFrames(metrics)).not.toBeNull();
 	});
 	/* Negative Testcases */

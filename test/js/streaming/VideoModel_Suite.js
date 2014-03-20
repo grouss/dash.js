@@ -12,86 +12,82 @@
 
 //This class parses the MPDs using DashParser framework.
 
-if(window.location.href.indexOf("runner.html")>0)
-{
-    describe("Video Model Suite", function () {
-            var context,
-                system,
-                result,
-                element,
-                objGruntUtil,
-                isGrunt,
-                videoModel;
-               
-                 beforeEach(function () {
-                    system = new dijon.System();
-                    system.mapValue("system", system);
-                    system.mapOutlet("system");
-                    context = new Dash.di.DashContext();
-                    system.injectInto(context);
-                    
-                    
-                    videoModel=system.getObject('videoModel');  
-                    element = document.createElement('video');
-                    videoModel.setElement((element));
-                   
-                 });
-                 
-                 it("stallStream for adding", function(){
-                         videoModel.stallStream("video",true);
-                         result= videoModel.getPlaybackRate();
-                         expect(result).toBe(0);
-                 });
-                 
-                 
-                 
-                 it("stallStream for removing ", function(){
-                         videoModel.stallStream("video",false);
-                         result=videoModel.getPlaybackRate();
-                         expect(result).toBe(1);
-                 });
-                 
-                 it("isStalled by adding", function(){
-                         videoModel.stallStream("video",true);
-                         result=videoModel.isStalled();
-                         expect(result).toBe(true);
-                 });
-                 
-                 it("isStalled by adding and removing", function(){
-                         videoModel.stallStream("video",true);
-                         result=videoModel.isStalled();
-                         expect(result).toBe(true);
-                         
-                         videoModel.stallStream("video",false);
-                         result=videoModel.isStalled();
-                         expect(result).toBe(false);
-                 });
-                 
-                 it("stallStream for adding by giving type null", function(){
-                         videoModel.stallStream(null,true);
-                         videoModel.setPlaybackRate(5);
-                         result= videoModel.getPlaybackRate();
-                         expect(result).toBe(5);
-                 });
-                 
-                  it("isStalled by adding and removing by giving type null", function(){
-                         videoModel.stallStream("video",true);
-                         result=videoModel.isStalled();
-                         expect(result).toBe(true);
-                         
-                         videoModel.stallStream(null,false);
-                         result=videoModel.isStalled();
-                         expect(result).toBe(true);
-                 });
-                 
-                 it("isPaused", function(){
-                     expect(videoModel.isPaused()).not.toBe(null);
-                 });
-                 
-                 it("getDroppedFrames", function(){
-                     videoModelExtension=new MediaPlayer.dependencies.VideoModelExtensions();
-                     expect(videoModelExtension.getDroppedFrames((element))).not.toBe(null);
-                 });
-            });
-            
-    }
+if (window.location.href.indexOf("runner.html") > 0) {
+	describe("Video Model Suite", function () {
+		var context,
+		system,
+		result,
+		element,
+		objGruntUtil,
+		isGrunt,
+		videoModel;
+
+		beforeEach(function () {
+			system = new dijon.System();
+			system.mapValue("system", system);
+			system.mapOutlet("system");
+			context = new Dash.di.DashContext();
+			system.injectInto(context);
+
+			videoModel = system.getObject('videoModel');
+			element = document.createElement('video');
+			videoModel.setElement((element));
+
+		});
+
+		it("stallStream for adding", function () {
+			videoModel.stallStream("video", true);
+			result = videoModel.getPlaybackRate();
+			expect(result).toBe(0);
+		});
+
+		it("stallStream for removing ", function () {
+			videoModel.stallStream("video", false);
+			result = videoModel.getPlaybackRate();
+			expect(result).toBe(1);
+		});
+
+		it("isStalled by adding", function () {
+			videoModel.stallStream("video", true);
+			result = videoModel.isStalled();
+			expect(result).toBe(true);
+		});
+
+		it("isStalled by adding and removing", function () {
+			videoModel.stallStream("video", true);
+			result = videoModel.isStalled();
+			expect(result).toBe(true);
+
+			videoModel.stallStream("video", false);
+			result = videoModel.isStalled();
+			expect(result).toBe(false);
+		});
+
+		it("stallStream for adding by giving type null", function () {
+			videoModel.stallStream(null, true);
+			videoModel.setPlaybackRate(5);
+			result = videoModel.getPlaybackRate();
+			expect(result).toBe(5);
+		});
+
+		it("isStalled by adding and removing by giving type null", function () {
+			videoModel.stallStream("video", true);
+			result = videoModel.isStalled();
+			expect(result).toBe(true);
+
+			videoModel.stallStream(null, false);
+			result = videoModel.isStalled();
+			expect(result).toBe(true);
+		});
+
+		it("isPaused", function () {
+			expect(videoModel.isPaused()).not.toBe(null);
+		});
+
+		it("getDroppedFrames", function () {
+			videoModelExtension = new MediaPlayer.dependencies.VideoModelExtensions();
+			expect(videoModelExtension.getDroppedFrames((element))).not.toBe(null);
+		});
+	});
+
+}

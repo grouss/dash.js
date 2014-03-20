@@ -11,33 +11,31 @@
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 //Method to read mpd and convert to string
-	function XmlToString(xmlPath) {
+function XmlToString(xmlPath) {
 
-		// predeclare to prevent strict js error.
-		var xmlDoc;
-		var mpdString;
+	// predeclare to prevent strict js error.
+	var xmlDoc;
+	var mpdString;
 
-		// For IE based browsers:
-		if (window.ActiveXObject) {
-			xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-			xmlDoc.async = false;
-			xmlDoc.load(xmlPath);
-			mpdString = xmlDoc.xml.toString();
-		}
-
-		// For Mozilla/chrome based (standards compliant) browsers:
-		else if (document.implementation && document.implementation.createDocument) {
-			var xmlHttp = new window.XMLHttpRequest();
-			xmlHttp.open("GET", xmlPath, false);
-			xmlHttp.send(null);
-			xmlDoc = xmlHttp.responseXML.documentElement;
-
-			var serializer = new XMLSerializer();
-			mpdString = serializer.serializeToString(xmlDoc);
-		}
-
-		return mpdString;
-
+	// For IE based browsers:
+	if (window.ActiveXObject) {
+		xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+		xmlDoc.async = false;
+		xmlDoc.load(xmlPath);
+		mpdString = xmlDoc.xml.toString();
 	}
-    
-    
+
+	// For Mozilla/chrome based (standards compliant) browsers:
+	else if (document.implementation && document.implementation.createDocument) {
+		var xmlHttp = new window.XMLHttpRequest();
+		xmlHttp.open("GET", xmlPath, false);
+		xmlHttp.send(null);
+		xmlDoc = xmlHttp.responseXML.documentElement;
+
+		var serializer = new XMLSerializer();
+		mpdString = serializer.serializeToString(xmlDoc);
+	}
+
+	return mpdString;
+
+}

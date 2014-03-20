@@ -1,27 +1,26 @@
-if(window.location.href.indexOf("runner.html")>0)
-{
+if (window.location.href.indexOf("runner.html") > 0) {
 	describe("Context Suite", function () {
-            var context,
-                system,
-                obj,
-				result;
-		beforeEach(function(){
+		var context,
+		system,
+		obj,
+		result;
+		beforeEach(function () {
 			system = new dijon.System();
 			system.mapValue("system", system);
 			system.mapOutlet("system");
 			context = new Dash.di.DashContext();
 			system.injectInto(context);
 		});
-		
-		it("Creating Singleton Objects",function(){
-			runs(function(){
+
+		it("Creating Singleton Objects", function () {
+			runs(function () {
 				expect(system.getObject('debug')).not.toBe(null);
 				expect(system.getObject('eventBus')).not.toBe(null);
 				expect(system.getObject('capabilities')).not.toBe(null);
 				expect(system.getObject('textTrackExtensions')).not.toBe(null);
 				expect(system.getObject('vttParser')).not.toBe(null);
 				expect(system.getObject('manifestModel')).not.toBe(null);
-				expect(system.getObject('metricsModel')).not.toBe(null);				
+				expect(system.getObject('metricsModel')).not.toBe(null);
 				expect(system.getObject('textVTTSourceBuffer')).not.toBe(null);
 				expect(system.getObject('mediaSourceExt')).not.toBe(null);
 				expect(system.getObject('sourceBufferExt')).not.toBe(null);
@@ -31,9 +30,9 @@ if(window.location.href.indexOf("runner.html")>0)
 				expect(system.getObject('protectionExt')).not.toBe(null);
 			});
 		});
-		
-		it("Creating Singleton Objects",function(){
-			runs(function(){
+
+		it("Creating Singleton Objects", function () {
+			runs(function () {
 				expect(system.getObject('protectionModel')).not.toBe(null);
 				expect(system.getObject('videoModel')).not.toBe(null);
 				expect(system.getObject('protectionController')).not.toBe(null);
@@ -49,10 +48,9 @@ if(window.location.href.indexOf("runner.html")>0)
 				expect(system.getObject('fragmentLoader')).not.toBe(null);
 				expect(system.getObject('fragmentController')).not.toBe(null);
 				expect(system.getObject('streamController')).not.toBe(null);
-				expect(system.getObject('stream')).not.toBe(null);				
+				expect(system.getObject('stream')).not.toBe(null);
 			});
 		});
-		
 
 	});
 }

@@ -1,4 +1,4 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
   grunt.initConfig({
     connect: {
       default_options: {}
@@ -14,24 +14,24 @@ module.exports = function(grunt) {
       min : {
         files: {
           "dash.min.js" : [
+			"app/lib/dijon.js",
+			"app/lib/q.js",
+            "app/lib/xml2json.js",
+            "app/lib/objectiron.js",    
             "app/js/streaming/MediaPlayer.js",
             "app/js/streaming/Context.js",
             "app/js/dash/Dash.js",
-            "app/js/dash/DashContext.js",
-            "app/lib/q.js",
-            "app/lib/xml2json.js",
-            "app/lib/objectiron.js",
-            "app/lib/dijon.js",
+            "app/js/dash/DashContext.js",                 
             "app/js/*/**/*.js"],
         }
       },
       all : {
         files: {
           "dash.all.js" : [
+			"./app/lib/dijon.js",
             "./app/lib/q.js",
             "./app/lib/xml2json.js",
-            "./app/lib/objectiron.js",
-            "./app/lib/dijon.js",
+            "./app/lib/objectiron.js",            
             "./app/lib/Math.js",
             "./app/lib/long.js",
             "./app/lib/base64.js",
@@ -45,7 +45,8 @@ module.exports = function(grunt) {
     },
     jasmine: {
       tests: {
-        src: [
+        src: [		
+			 "app/lib/dijon.js",
             "./app/js/streaming/MediaPlayer.js",
             "./app/js/streaming/Context.js",
             "./app/js/dash/Dash.js",
@@ -57,37 +58,46 @@ module.exports = function(grunt) {
           keepRunner: true,
           helpers: [
             "./test/js/utils/MPDfiles.js",
-            "./test/js/utils/Utils.js",
-            "./test/js/utils/ValidateUrl.js",
+            "./test/js/utils/Utils.js", 
+			"./test/js/utils/ValidateUrl.js",
             "./app/js/Main.js"],
           specs: [
-            './test/js/dash/DashParser_Suite.js',
-             './test/js/dash/FragmentExtensions_Suite.js',
+            './test/js/streaming/TextController_Suite.js',
+			'./test/js/dash/FragmentExtensions_Suite.js',
              './test/js/dash/DashMetricsExtensions_Suite.js',
              './test/js/dash/DashMetricsConverter_Suite.js',
              './test/js/dash/DashManifestExtensions_Suite.js',
              './test/js/dash/DashManifestExtensionsNeg_Suite.js',
              './test/js/dash/DashHandler_Suite.js',
              './test/js/streaming/MediaPlayer_Suite.js',
-             './test/js/streaming/Stream_Suite.js',
              './test/js/streaming/AbrController_Suite.js',
              './test/js/streaming/BufferController_Suite.js',
              './test/js/streaming/Capabilities_Suite.js',
              './test/js/streaming/MetricsModel_Suite.js',
              './test/js/streaming/ManifestUpdater_Suite.js',
              './test/js/streaming/FragmentController_Suite.js',
-             "./test/js/streaming/VideoModel_Suite.js",
-             './test/js/streaming/ManifestLoader_Suite.js'
+             './test/js/streaming/ManifestLoader_Suite.js',
+			 './test/js/streaming/TextTrackExtensions_Suite.js',
+			 './test/js/streaming/TextVTTSourceBuffer_Suite.js',
+			 './test/js/streaming/VTTParser_Suite.js',
+			 './test/js/streaming/BufferExtensions_Suite.js',
+			 './test/js/streaming/Context_Suite.js',
+			 './test/js/streaming/EventBus_Suite.js',
+			 './test/js/streaming/MediaSourceExtensions_Suite.js',
+			 './test/js/streaming/SourceBufferExtensions_Suite.js',
+			 './test/js/streaming/Stream_Suite.js',
+			 './test/js/streaming/StreamController_Suite.js',
+			 './test/js/streaming/VideoModelExtensions_Suite.js'            
 			],
           vendor: [
+			"./app/lib/dijon.js",
 			"./app/lib/jquery/jquery-1.10.2.min.js",
             "./app/lib/q.js",
             "./app/lib/xml2json.js",
             "./app/lib/objectiron.js",			
             "./app/lib/Math.js",
             "./app/lib/long.js",
-            "./app/lib/kendo/kendo.web.min.js", 
-			"./app/lib/dijon.js",
+            "./app/lib/kendo/kendo.web.min.js", 			
             "./app/lib/base64.js"],
           template : require('grunt-template-jasmine-istanbul'),
           templateOptions: {

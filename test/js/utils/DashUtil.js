@@ -10,14 +10,14 @@
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS 'AS IS' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 //
 
-var element, player, video, stream, system, context, mpd, counter, seekCounter, count, tdID, stalled, isPaused, isSeeking, chkTimeout, currentDate, intervalID, refreshId, testMode, testModeList, csvContent, playbackCounter, runTestFlag, lastTime, endCheckCount, testPhaseDuration, lastTimeDuplicate,isIE;
+var element, player, video, stream, system, context, mpd, counter, seekCounter, count, tdID, stalled, isPaused, isSeeking, chkTimeout, currentDate, intervalID, refreshId, testMode, testModeList, csvContent, playbackCounter, runTestFlag, lastTime, endCheckCount, testPhaseDuration, lastTimeDuplicate, isIE;
 $(document).ready(function testLoad() {
 
 	csvContent = 'data:text/csv;charset=utf-8,';
 	document.getElementById('files').addEventListener('change', handleFileSelect, false);
 	document.getElementById('files').style.visibility = "visible";
 	testModeList = document.getElementById('myList');
-	testModeList.onchange = function(e){
+	testModeList.onchange = function (e) {
 		modeChanged(e);
 	};
 	runTestFlag = false;
@@ -95,15 +95,15 @@ function createRow(i) {
 
 function teardown() {
 	if (!!player) {
-		$('#MPDUrl' + counter).text($('#MPDUrl' + counter).text() +  "Duration: " + (element).duration);
-		
+		$('#MPDUrl' + counter).text($('#MPDUrl' + counter).text() + "Duration: " + (element).duration);
+
 		if (stalled === true) {
 			$('#stall' + counter).html('Video was stalled');
 		} else {
 			$('#stall' + counter).html('Video was not stalled');
 		}
 
-		$('#Video'+counter).hide();
+		$('#Video' + counter).hide();
 		$('#Video' + counter).children().eq(0).remove();
 
 		player.reset();
@@ -136,7 +136,7 @@ function initialisation(rowID) {
 	if (testMode == 'Automation') {
 		(element).removeAttribute('controls');
 	} else {
-		(element).setAttribute("controls");
+		//(element).setAttribute("controls");
 	}
 
 	var videoDiv = document.querySelector('.ClassVideo' + (rowID));
@@ -187,27 +187,27 @@ function initialisation(rowID) {
 		player = new MediaPlayer(context);
 		player.startup();
 		var mpdID = '#MPDUrl' + rowID,
-			onError = function (e) {
-				var message = "null";
-				if (e) {	
-					message = "source=" + e.error;
-					if (e.event.hasOwnProperty("id")) {
-						message += ", id=" + e.event.id;
-					}
-					if (e.event.hasOwnProperty("request")) {
-						message += ", status=" + e.event.request.status;
-					}
-					if (e.event.hasOwnProperty("message")) {
-						message += ", " + e.event.message;
-					}
-					if (typeof e.event === "string") {
-						message += ", " + e.event;
-					}
+		onError = function (e) {
+			var message = "null";
+			if (e) {
+				message = "source=" + e.error;
+				if (e.event.hasOwnProperty("id")) {
+					message += ", id=" + e.event.id;
 				}
-				$("#error"+rowID).html($("#error"+rowID).html() + "Error: " + message + "<br/>");
-				$('#ClassVideo' + rowID).hide();
-				$('#Video' + rowID).hide();
-			};
+				if (e.event.hasOwnProperty("request")) {
+					message += ", status=" + e.event.request.status;
+				}
+				if (e.event.hasOwnProperty("message")) {
+					message += ", " + e.event.message;
+				}
+				if (typeof e.event === "string") {
+					message += ", " + e.event;
+				}
+			}
+			$("#error" + rowID).html($("#error" + rowID).html() + "Error: " + message + "<br/>");
+			$('#ClassVideo' + rowID).hide();
+			$('#Video' + rowID).hide();
+		};
 		$(mpdID).text(mpd[rowID - 1]);
 
 		player.addEventListener("error", onError.bind(this));
@@ -229,7 +229,7 @@ function initialisation(rowID) {
 function runTest(id) {
 	runTestFlag = true;
 	playbackCounter = 0;
-	$('#Video'+counter).hide();
+	$('#Video' + counter).hide();
 	$('#' + id).live('click', function () {
 		initialisation(parseInt($(this).closest('tr').attr('id')));
 	});
@@ -292,12 +292,10 @@ function time() {
 			if (count == 0 && !isPaused && (element).currentTime >= testPhaseDuration) {
 				(element).pause();
 				isPaused = true;
-			}
-			else if (count == 1 && !isSeeking) {
+			} else if (count == 1 && !isSeeking) {
 				(element).currentTime = (element).duration - (testPhaseDuration * 2);
 				isSeeking = true;
-			}
-			else {
+			} else {
 				if (isPaused) {
 					isPaused = false;
 					count++;
@@ -384,9 +382,7 @@ function resumeTest() {
 	intervalID = setInterval(time, 1000);
 }
 
-function clearTest(){
-
-}
+function clearTest() {}
 function appendLogMsg(tableDivId) {
 	var msg = $(tableDivId).html();
 	if (msg.trim().length != 0)
@@ -443,15 +439,15 @@ function exportToJSON() {
 function importToTable(contents) {
 	//For IE
 	if (!!window.MSStream) {
-			contentXML = new window.ActiveXObject("Microsoft.XMLDOM");
-			contentXML.async = "false";
-			contentXML.loadXML(contents);
+		contentXML = new window.ActiveXObject("Microsoft.XMLDOM");
+		contentXML.async = "false";
+		contentXML.loadXML(contents);
 	}
 	//For Chrome
 	else {
 		contentXML = (new DOMParser()).parseFromString(contents, "text/xml");
 	}
-	populateTable(contentXML);	
+	populateTable(contentXML);
 }
 
 function handleFileSelect(evt) {
@@ -462,7 +458,7 @@ function handleFileSelect(evt) {
 	var reader = new FileReader();
 	reader.onload = (function (theFile) {
 		return function (e) {
-			importToTable(e.target.result); 
+			importToTable(e.target.result);
 		};
 	})(files[0]);
 	reader.readAsText(files[0]);
@@ -476,19 +472,19 @@ function populateTable(contentXML) {
 		mpdTable.deleteRow(i);
 	}
 	mpd = new Array()
-	
-	var contentTag = contentXML.getElementsByTagName("content");
-	for (var rowId = 0; rowId < contentTag.length; rowId++) {		
+
+		var contentTag = contentXML.getElementsByTagName("content");
+	for (var rowId = 0; rowId < contentTag.length; rowId++) {
 		if (!!window.MSStream)
 			mpd[rowId] = contentTag[rowId].childNodes[1].text;
 		else
 			mpd[rowId] = contentTag[rowId].children[1].textContent;
-		
+
 		createRow(rowId + 1);
-if (!!window.MSStream)
-		$('#MPDUrl' + rowId).html(contentTag[rowId].childNodes[1].text);
-	else		
-		$('#MPDUrl' + rowId).html(contentTag[rowId].children[1].textContent);
+		if (!!window.MSStream)
+			$('#MPDUrl' + rowId).html(contentTag[rowId].childNodes[1].text);
+		else
+			$('#MPDUrl' + rowId).html(contentTag[rowId].children[1].textContent);
 		$('#play' + rowId).html("");
 		$('#pause' + rowId).html("");
 		$('#seek' + rowId).html("");
@@ -509,7 +505,7 @@ function textClick() {
 
 /** Error logging*/
 function logging() {
-debugger;
+
 	for (var i = 0; i < mpd.length; i++) {
 		csvContent += '=================================================================================';
 		csvContent += 'Info';

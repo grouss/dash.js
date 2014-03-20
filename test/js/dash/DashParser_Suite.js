@@ -22,8 +22,8 @@ describe("Parser Test Suite", function () {
 	 * Method to be run before each test method runs
 	 */
 	beforeEach(function () {
-	
-        baseUrl = "http://dashdemo.edgesuite.net/envivio/dashpr/clear/";
+
+		baseUrl = "http://dashdemo.edgesuite.net/envivio/dashpr/clear/";
 		// Set up DI.
 		system = new dijon.System();
 		system.mapValue("system", system);
@@ -201,7 +201,7 @@ describe("Parser Test Suite", function () {
 	it("parse reads mpd file and returns valid objects - MPD Type 2", function () {
 		var data = '';
 
-        stub = strMpd["MPD1"];
+		stub = strMpd["MPD1"];
 
 		parser.parse(stub, baseUrl).then(function (Data) {
 			data = Data;
@@ -259,7 +259,7 @@ describe("Parser Test Suite", function () {
 	it("parse reads mpd file and returns valid objects - MPD Type 3", function () {
 		var data = '';
 
-        stub = strMpd["MPD3"];
+		stub = strMpd["MPD3"];
 		parser.parse(stub, baseUrl).then(function (Data) {
 			data = Data;
 
@@ -545,9 +545,9 @@ describe("Parser Test Suite", function () {
 		});
 
 	});
-    
-    //Negative testcase
-    it("parse reads mpd file and returns valid objects with stub as null", function () {
+
+	//Negative testcase
+	it("parse reads mpd file and returns valid objects with stub as null", function () {
 
 		var data = '';
 		parser.parse(emptyMpdData["MPD1"], baseUrl).then(function (Data) {
@@ -565,27 +565,24 @@ describe("Parser Test Suite", function () {
 		});
 
 	});
-		
-    
-    
-   it("parse reads mpd file and returns valid objects with baseurl as null", function () {
+
+	it("parse reads mpd file and returns valid objects with baseurl as null", function () {
 		var data = '',
-        stub =  strMpd["MPD4"];
+		stub = strMpd["MPD4"];
 
 		parser.parse(stub, null).then(function (Data) {
 			data = Data;
 		}, function (Error) {
 			data = Error;
 		});
-		
-        waitsFor(function () {
+
+		waitsFor(function () {
 			if (data != '')
 				return true;
 		}, "parsed data is null", 50);
 		runs(function () {
-          expect(data.__cnt).toEqual(13);
-        });
+			expect(data.__cnt).toEqual(13);
+		});
 	});
-
 
 });

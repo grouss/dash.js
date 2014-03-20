@@ -12,77 +12,76 @@
 
 //This class parses the MPDs using DashParser framework.
 
-if(window.location.href.indexOf("runner.html")>0)
-{
-    describe("Capabilities Suite", function () {
-            var context,
-                system,
-                result,
-                capabilitiesObj,
-                flag;
-               
-                 beforeEach(function () {
-                    system = new dijon.System();
-                    system.mapValue("system", system);
-                    system.mapOutlet("system");
-                    context = new Dash.di.DashContext();
-                    system.injectInto(context);
-                    capabilitiesObj=system.getObject('capabilities');
-					var element = document.createElement('video');
-                    video = system.getObject("videoModel");
-                    video.setElement(element);
-                         
-                    stream = system.getObject("stream");
-                });
-              
-                it("supports Codec", function(){
-					debugger;
-                    stream.manifestModel.setValue(manifestRes);
-						stream.manifestExt.getVideoData(manifestRes,0).then(
-							function (videoData) {
-								debugger;
-								stream.manifestExt.getCodec(videoData).then(
-									function (codec) {
-										debugger;
-										var result= stream.capabilities.supportsCodec(stream.videoModel.getElement(), codec)
-										expect(result).toBe(true);
-									});
-						 });
-                });
-                   
-                   it("supports Codec with manifestResult.Period_asArray[0].AdaptationSet_asArray as empty", function(){						
-                        manifestRes.Period_asArray[0].AdaptationSet_asArray={};
-						stream.manifestModel.setValue(manifestRes);
-						stream.manifestExt.getVideoData(manifestRes,0).then(
-							function (videoData) {
-							   expect(videoData).not.toBe(null);
-						});
-                    });
-                    
-                    it("supports Codec with videoData as null", function(){
-                        stream.manifestModel.setValue(manifestRes);
-                        stream.manifestExt.getVideoData(manifestRes,0).then(
-                        	function (videoData) {
-                        	videoData = null;
-                        	stream.manifestExt.getCodec(videoData).then(
-                        		function (codec) {
-                        		expect(codec).toBe(null);
-                        	});
-                        });
-                    });
-                    
-                    it("supports MediaSource", function () {
-                    	expect(capabilitiesObj.supportsMediaSource()).not.toBe(null);
-                    });
-                    it("supports MediaKeys", function () {
-                    	expect(capabilitiesObj.supportsMediaKeys()).not.toBe(null);
-                    });
+if (window.location.href.indexOf("runner.html") > 0) {
+	describe("Capabilities Suite", function () {
+		var context,
+		system,
+		result,
+		capabilitiesObj,
+		flag;
 
-                    it("supports Codec", function () {
-                    	expect(function () {
-                    		capabilitiesObj.supportsCodec(null, null, null)
-                    	}).toThrow();
-                    });
-                  
-        });
-    }
+		beforeEach(function () {
+			system = new dijon.System();
+			system.mapValue("system", system);
+			system.mapOutlet("system");
+			context = new Dash.di.DashContext();
+			system.injectInto(context);
+			capabilitiesObj = system.getObject('capabilities');
+			var element = document.createElement('video');
+			video = system.getObject("videoModel");
+			video.setElement(element);
+
+			stream = system.getObject("stream");
+		});
+
+		it("supports Codec", function () {
+
+			stream.manifestModel.setValue(manifestRes);
+			stream.manifestExt.getVideoData(manifestRes, 0).then(
+				function (videoData) {
+
+				stream.manifestExt.getCodec(videoData).then(
+					function (codec) {
+
+					var result = stream.capabilities.supportsCodec(stream.videoModel.getElement(), codec)
+						expect(result).toBe(true);
+				});
+			});
+		});
+
+		it("supports Codec with manifestResult.Period_asArray[0].AdaptationSet_asArray as empty", function () {
+			manifestRes.Period_asArray[0].AdaptationSet_asArray = {};
+			stream.manifestModel.setValue(manifestRes);
+			stream.manifestExt.getVideoData(manifestRes, 0).then(
+				function (videoData) {
+				expect(videoData).not.toBe(null);
+			});
+		});
+
+		it("supports Codec with videoData as null", function () {
+			stream.manifestModel.setValue(manifestRes);
+			stream.manifestExt.getVideoData(manifestRes, 0).then(
+				function (videoData) {
+				videoData = null;
+				stream.manifestExt.getCodec(videoData).then(
+					function (codec) {
+					expect(codec).toBe(null);
+				});
+			});
+		});
+
+		it("supports MediaSource", function () {
+			expect(capabilitiesObj.supportsMediaSource()).not.toBe(null);
+		});
+		it("supports MediaKeys", function () {
+			expect(capabilitiesObj.supportsMediaKeys()).not.toBe(null);
+		});
+
+		it("supports Codec", function () {
+			expect(function () {
+				capabilitiesObj.supportsCodec(null, null, null)
+			}).toThrow();
+		});
+
+	});
+}

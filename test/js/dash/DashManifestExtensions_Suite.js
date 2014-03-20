@@ -919,7 +919,7 @@ for (var MPDstring in strMpd) {
 			});
             
             it("getContentProtectionData with data", function () {
-				debugger;
+				
                 var data = { "ContentProtection_asArray" :2 },
 			    res = '';
 				res=manExtn.getContentProtectionData(data);
@@ -985,7 +985,7 @@ for (var MPDstring in strMpd) {
 			}); */
 			
 			it("Is Text Track - text/vtt", function () {
-				debugger;
+				
                 var type="text/vtt",
                 res = '';
                 res =manExtn.getIsTextTrack(type);
@@ -1021,10 +1021,10 @@ for (var MPDstring in strMpd) {
 			});
 			
 			it("get Mime type - Video", function () {
-				debugger;
+				
 				var data = '';
 				manExtn.getMimeType(adaptationSetVideo).then(function (Data) {
-					debugger;
+					
 					data = Data;
 				}, function (Error) {
 					data = null;
@@ -1034,7 +1034,7 @@ for (var MPDstring in strMpd) {
 						return true;
 				}, "data is null", 100);
 				runs(function () {
-					debugger;
+					
 					switch (docMpdProto) {
 					case 1:
 						expect(data).toEqual('video/mp4');
@@ -1056,10 +1056,10 @@ for (var MPDstring in strMpd) {
 			});
 			
 			it("get Mime type - Audio", function () {
-				debugger;
+				
 				var data = '';
 				manExtn.getMimeType(adaptationSetAudio).then(function (Data) {
-					debugger;
+					
 					data = Data;
 				}, function (Error) {
 					data = null;
@@ -1069,7 +1069,7 @@ for (var MPDstring in strMpd) {
 						return true;
 				}, "data is null", 100);
 				runs(function () {
-					debugger;
+					
 					switch (docMpdProto) {
 					case 1:
 						expect(data).toEqual('audio/mp4');
